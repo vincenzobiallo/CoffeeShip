@@ -1,15 +1,15 @@
 package it.vincenzobiallo.coffeeship.exceptions;
 
-public class BarcaException extends Exception {
+public class PersonaException extends Exception {
 
 	private static final long serialVersionUID = 1L;
-	private static final String TITLE = "Eccezione Barca";
+	private static final String TITLE = "Eccezione Persona";
 	
-	public BarcaException() {
+	public PersonaException() {
 		super();
 	}
 	
-	public BarcaException(String message) {
+	public PersonaException(String message) {
 		super(message);
 	}
 	

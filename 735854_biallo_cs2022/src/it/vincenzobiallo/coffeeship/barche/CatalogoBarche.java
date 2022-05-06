@@ -68,7 +68,7 @@ public class CatalogoBarche {
 		}
 	}
 	
-	public static void salvaCatalogo() throws IOException {
+	public static void salvaCatalogo() {
 		
 		JSONArray json = new JSONArray();
 		
@@ -95,10 +95,16 @@ public class CatalogoBarche {
 			
 			json.put(obj);
 		}
-
-		BufferedWriter writer = new BufferedWriter(new FileWriter("barche.json"));
-		writer.write(json.toString(4));
-		writer.close();			
+		
+		BufferedWriter writer;
+		try {
+			writer = new BufferedWriter(new FileWriter("barche.json"));
+			writer.write(json.toString(4));
+			writer.close();
+		} catch (IOException ex) {
+			MessageBox.showWarning("Creazione File", "Ho creato un nuovo file barche.json");
+		}
+					
 	}
 	
 	public static boolean aggiungiBarca(String numero_serie, Scafo scafo, Chiglia chiglia, Deriva deriva, Alberatura alberatura, Timone timone, ModelloBarca modello) {
@@ -122,13 +128,9 @@ public class CatalogoBarche {
 			}
 			
 			if (!barche.contains(barca)) {	
-				try {
-					barche.add(barca);
-					salvaCatalogo();
-					return true;
-				} catch (IOException ex) {
-					MessageBox.showError("Aggiungi Barca", ex.getMessage());
-				}			
+				barche.add(barca);
+				salvaCatalogo();
+				return true;		
 			}
 					
 		} catch(BarcaException ex) {
@@ -143,13 +145,8 @@ public class CatalogoBarche {
 		Barca barca = getBarca(numero_serie);
 		
 		if (barca != null) {	
-			try {
-				barche.remove(barca);
-				salvaCatalogo();
-				return true;
-			} catch (IOException ex) {
-				MessageBox.showError("Rimuovi Barca", ex.getMessage());
-			}		
+			barche.remove(barca);
+			salvaCatalogo();
 			return true;
 		}
 		

@@ -7,7 +7,7 @@ class Cabina {
 	private boolean cucina;
 	private int bagni;
 	
-	public Cabina(Barca barca, int numero_letti, boolean cucina_presente, int numero_bagni) {
+	Cabina(Barca barca, int numero_letti, boolean cucina_presente, int numero_bagni) {
 		this.barca = barca;
 		this.letti = numero_letti;
 		this.cucina = cucina_presente;

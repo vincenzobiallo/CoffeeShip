@@ -3,7 +3,7 @@ package it.vincenzobiallo.coffeeship.barche;
 import it.vincenzobiallo.coffeeship.barche.elementi.*;
 import it.vincenzobiallo.coffeeship.exceptions.BarcaException;
 
-public class BarcaBase extends Barca {
+class BarcaBase extends Barca {
 
 	public BarcaBase(String numero_serie, Scafo scafo, Chiglia chiglia, Deriva deriva, Alberatura alberatura, Timone timone) throws BarcaException {
 		super(numero_serie, scafo, chiglia, deriva, alberatura, timone);

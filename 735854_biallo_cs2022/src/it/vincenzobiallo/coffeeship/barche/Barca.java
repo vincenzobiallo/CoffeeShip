@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import it.vincenzobiallo.coffeeship.barche.elementi.*;
 import it.vincenzobiallo.coffeeship.exceptions.BarcaException;
 
-abstract class Barca implements Cloneable {
+public abstract class Barca implements Cloneable {
 	
 	private String numero_serie;
 	private Scafo scafo;
