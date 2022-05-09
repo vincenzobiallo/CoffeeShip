@@ -16,6 +16,7 @@ public abstract class Barca implements Cloneable {
 	private Alberatura alberatura;
 	private Timone timone;
 	
+	protected ModelloBarca modello;
 	protected Cabina[] cabine;
 	
 	protected Barca(String numero_serie, Scafo scafo, Chiglia chiglia, Deriva deriva, Alberatura alberatura, Timone timone) throws BarcaException {
@@ -52,6 +53,10 @@ public abstract class Barca implements Cloneable {
 	
 	public Timone getTimone() {
 		return timone;
+	}
+	
+	public ModelloBarca getModello() {
+		return modello;
 	}
 	
 	public int getNumeroBagni() {

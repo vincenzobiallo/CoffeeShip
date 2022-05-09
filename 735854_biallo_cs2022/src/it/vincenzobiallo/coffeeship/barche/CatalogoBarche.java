@@ -124,7 +124,7 @@ public class CatalogoBarche {
 				barca = new BarcaAvanzata(numero_serie, scafo, chiglia, deriva, alberatura, timone);
 				break;
 			default:
-				throw new BarcaException("Modello Barca non valido!");
+				throw new BarcaException("Il modello della Barca non è valido!");
 			}
 			
 			if (!barche.contains(barca)) {	

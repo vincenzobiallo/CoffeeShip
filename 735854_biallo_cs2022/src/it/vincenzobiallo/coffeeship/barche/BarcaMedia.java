@@ -7,6 +7,7 @@ class BarcaMedia extends Barca {
 
 	public BarcaMedia(String numero_serie, Scafo scafo, Chiglia chiglia, Deriva deriva, Alberatura alberatura, Timone timone) throws BarcaException {
 		super(numero_serie, scafo, chiglia, deriva, alberatura, timone);
+		super.modello = ModelloBarca.MEDIA;
 	}
 
 	@Override

@@ -98,7 +98,7 @@ public class CatalogoClienti {
 		
 	}
 	
-	public static boolean aggiungiCliente(String codice_fiscale, String nome, String cognome, Calendar dataNascita) {
+	public static int aggiungiCliente(String codice_fiscale, String nome, String cognome, Calendar dataNascita) {
 		
 		try {
 
@@ -107,14 +107,15 @@ public class CatalogoClienti {
 			if (!clienti.contains(cliente)) {
 				clienti.add(cliente);
 				salvaCatalogo();
-				return true;			
+				return 1;			
 			}
 			
 		} catch (PersonaException ex) {
 			MessageBox.showWarning(ex.getTitle(), ex.getMessage());
+			return -1;
 		}
 		
-		return false;
+		return 0;
 		
 	}
 	

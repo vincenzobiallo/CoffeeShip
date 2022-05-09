@@ -107,7 +107,7 @@ public class CatalogoVenditori {
 		
 	}
 	
-	public static boolean aggiungiVenditore(String codice_venditore, String codice_fiscale, String nome, String cognome, Calendar dataNascita) {
+	public static int aggiungiVenditore(String codice_venditore, String codice_fiscale, String nome, String cognome, Calendar dataNascita) {
 		
 		try {
 
@@ -116,15 +116,15 @@ public class CatalogoVenditori {
 			if (!venditori.contains(venditore)) {
 				venditori.add(venditore);
 				salvaCatalogo();
-				return true;			
+				return 1;			
 			}
 			
 		} catch (PersonaException ex) {
 			MessageBox.showWarning(ex.getTitle(), ex.getMessage());
+			return -1;
 		}
 		
-		return false;
-		
+		return 0;
 	}
 	
 	public static boolean rimuoviVenditore(String value) {

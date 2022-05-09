@@ -1,6 +1,9 @@
 package it.vincenzobiallo.coffeeship;
 
+import java.awt.EventQueue;
+
 import it.vincenzobiallo.coffeeship.barche.CatalogoBarche;
+import it.vincenzobiallo.coffeeship.forms.HomeFrame;
 import it.vincenzobiallo.coffeeship.utenti.clienti.CatalogoClienti;
 import it.vincenzobiallo.coffeeship.utenti.venditori.CatalogoVenditori;
 import it.vincenzobiallo.coffeeship.utils.MessageBox;
@@ -13,6 +16,17 @@ public class CoffeeShip {
 		
 		if (!caricaFiles())
 			System.exit(-1);
+		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					HomeFrame home = new HomeFrame();
+					home.getMainFrame().setVisible(true);
+				} catch (Exception ex) {
+					MessageBox.showError(null, ex.getMessage());
+				}
+			}
+		});
 		
 	}
 	
