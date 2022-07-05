@@ -119,6 +119,28 @@ public class CatalogoClienti {
 		
 	}
 	
+	public static int modificaCliente(String codice_fiscale, String nome, String cognome, Calendar dataNascita) {
+		
+		try {
+
+			Cliente cliente = new Cliente(codice_fiscale, nome, cognome, dataNascita);
+			
+			if (clienti.contains(cliente)) {
+				clienti.remove(cliente);
+				clienti.add(cliente);
+				salvaCatalogo();
+				return 1;			
+			}
+			
+		} catch (PersonaException ex) {
+			MessageBox.showWarning(ex.getTitle(), ex.getMessage());
+			return -1;
+		}
+		
+		return 0;
+		
+	}
+	
 	public static boolean rimuoviCliente(String codice_fiscale) {
 		
 		Cliente cliente = getCliente(codice_fiscale);

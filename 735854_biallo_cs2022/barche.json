@@ -1,1 +1,20 @@
-[]
+[
+    {
+        "numero_serie": "444422669418",
+        "timone": "SOSPESO",
+        "chiglia": "LUNGA",
+        "scafo": "MULTISCAFO",
+        "deriva": "RETRATTILE",
+        "alberatura": "KETCH",
+        "modello": "MEDIA"
+    },
+    {
+        "numero_serie": "123456781111",
+        "timone": "INTEGRATO",
+        "chiglia": "LUNGA",
+        "scafo": "MONOSCAFO",
+        "deriva": "PERNO",
+        "alberatura": "SLOOP_ARMO",
+        "modello": "BASE"
+    }
+]

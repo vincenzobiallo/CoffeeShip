@@ -10,7 +10,7 @@ public class MessageBox {
 	
 	public static final void showInformation(String title, String message) {
 		
-		if (title.isEmpty())
+		if (title.isEmpty() || title == null)
 			title = CoffeeShip.TITLE;
 		
 		if (boxForm)
@@ -21,7 +21,7 @@ public class MessageBox {
 	
 	public static final void showWarning(String title, String message) {
 		
-		if (title.isEmpty())
+		if (title.isEmpty() || title == null)
 			title = CoffeeShip.TITLE;
 		
 		if (boxForm)
@@ -32,7 +32,7 @@ public class MessageBox {
 	
 	public static final void showError(String title, String message) {
 		
-		if (title.isEmpty())
+		if (title.isEmpty() || title == null)
 			title = CoffeeShip.TITLE;
 		
 		if (boxForm)
@@ -43,7 +43,7 @@ public class MessageBox {
 	
 	public static final boolean askQuestion(String title, String message) {
 		
-		if (title.isEmpty())
+		if (title.isEmpty() || title == null)
 			title = CoffeeShip.TITLE;
 		
 		int answer = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);

@@ -7,6 +7,7 @@ import it.vincenzobiallo.coffeeship.forms.HomeFrame;
 import it.vincenzobiallo.coffeeship.utenti.clienti.CatalogoClienti;
 import it.vincenzobiallo.coffeeship.utenti.venditori.CatalogoVenditori;
 import it.vincenzobiallo.coffeeship.utils.MessageBox;
+import it.vincenzobiallo.coffeeship.vendite.CatalogoListini;
 
 public class CoffeeShip {
 	
@@ -65,6 +66,17 @@ public class CoffeeShip {
 				return false;
 			
 			CatalogoVenditori.salvaCatalogo();
+		}
+		
+		try {
+			CatalogoListini.caricaCatalogo();
+		} catch (Exception ex) {
+			MessageBox.showWarning(title, ex.getMessage());
+			
+			if(!MessageBox.askQuestion(title, "Vuoi creare un nuovo file?"))
+				return false;
+			
+			CatalogoListini.salvaCatalogo();
 		}
 		
 		return true;

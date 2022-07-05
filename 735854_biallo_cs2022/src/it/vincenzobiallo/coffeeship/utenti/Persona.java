@@ -7,7 +7,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import it.vincenzobiallo.coffeeship.exceptions.PersonaException;
-import it.vincenzobiallo.coffeeship.utenti.clienti.Cliente;
 
 public class Persona implements Comparable<Persona>, Cloneable {
 	
@@ -113,7 +112,7 @@ public class Persona implements Comparable<Persona>, Cloneable {
 			ex.printStackTrace();
 		}
 		
-		return (Cliente) clone;
+		return clone;
 	}
 
 }

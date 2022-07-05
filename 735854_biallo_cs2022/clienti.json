@@ -1,6 +1,32 @@
-[{
-    "codice_fiscale": "BLLVCN01M08A662P",
-    "cognome": "Biallo",
-    "data_nascita": "08/08/2001",
-    "nome": "Vincenzo"
-}]
+[
+    {
+        "codice_fiscale": "LARNGL71D25C129R",
+        "cognome": "Scapoli",
+        "data_nascita": "27/11/2001",
+        "nome": "Manuel"
+    },
+    {
+        "codice_fiscale": "RSSPRZ74H59C495B",
+        "cognome": "Rossetti",
+        "data_nascita": "05/05/1978",
+        "nome": "Patrizia"
+    },
+    {
+        "codice_fiscale": "LFRNGL71D25C129R",
+        "cognome": "Lofrano",
+        "data_nascita": "01/11/1974",
+        "nome": "Angelo"
+    },
+    {
+        "codice_fiscale": "DRDVCN01A10Z112C",
+        "cognome": "Dardano",
+        "data_nascita": "14/01/1988",
+        "nome": "Vincenzo"
+    },
+    {
+        "codice_fiscale": "RZZCCT80D46F158A",
+        "cognome": "Rizzo",
+        "data_nascita": "14/07/1944",
+        "nome": "Concetta"
+    }
+]

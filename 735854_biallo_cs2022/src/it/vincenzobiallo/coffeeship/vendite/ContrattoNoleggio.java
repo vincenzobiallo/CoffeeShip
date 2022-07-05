@@ -8,7 +8,7 @@ import it.vincenzobiallo.coffeeship.exceptions.ContrattoException;
 import it.vincenzobiallo.coffeeship.utenti.clienti.Cliente;
 import it.vincenzobiallo.coffeeship.utenti.venditori.Venditore;
 
-class ContrattoNoleggio {
+public class ContrattoNoleggio {
 	
 	private Barca barca;
 	private Cliente cliente;
@@ -20,7 +20,9 @@ class ContrattoNoleggio {
 	private double canone;
 	private double penale;
 	
-	public ContrattoNoleggio(Barca barca, Venditore venditore, Cliente cliente, double canone, double penale, Calendar dataInizio, Calendar dataFine) throws ContrattoException {		
+	private boolean terminato = false;
+	
+	ContrattoNoleggio(Barca barca, Venditore venditore, Cliente cliente, double canone, double penale, Calendar dataInizio, Calendar dataFine, boolean terminato) throws ContrattoException {		
 		
 		if ((venditore == null) || (cliente == null))
 			throw new ContrattoException("Dati Venditore/Cliente non validi!");
@@ -43,6 +45,7 @@ class ContrattoNoleggio {
 		
 		this.canone = canone;
 		this.penale = penale;
+		this.terminato = terminato;
 	}
 
 	public Barca getBarca() {
@@ -73,6 +76,14 @@ class ContrattoNoleggio {
 
 	public double getPenale() {
 		return penale;
+	}
+	
+	public boolean isTerminato() {
+		return terminato;
+	}
+	
+	public void setTerminato(boolean value) {
+		this.terminato = value;
 	}
 
 }

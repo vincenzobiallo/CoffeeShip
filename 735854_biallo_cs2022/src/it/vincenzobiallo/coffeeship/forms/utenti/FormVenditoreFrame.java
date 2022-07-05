@@ -6,6 +6,8 @@ import it.vincenzobiallo.coffeeship.utils.MessageBox;
 
 import javax.swing.JTextField;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -19,6 +21,7 @@ public class FormVenditoreFrame extends AbstractForm<Venditore> {
 
 	public FormVenditoreFrame() {
 		super();
+	
 		injectInput();
 		
 		super.TITLE = "Aggiungi Venditore";
@@ -28,7 +31,9 @@ public class FormVenditoreFrame extends AbstractForm<Venditore> {
 	
 	public FormVenditoreFrame(Venditore venditore) {	
 		super(venditore);
+		
 		injectInput();
+		this.boxCodiceVenditore.setEnabled(false);
 		
 		super.TITLE = "Modifica Venditore";
 		setTitle(TITLE);
@@ -38,7 +43,12 @@ public class FormVenditoreFrame extends AbstractForm<Venditore> {
 		super.boxCodiceFiscale.setText(venditore.getCodiceFiscale());
 		super.boxNome.setText(venditore.getNome());
 		super.boxCognome.setText(venditore.getCognome());
-		super.boxDataNascita.setDate(super.boxDataNascita.getDate());
+		try {
+			super.boxDataNascita.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(venditore.getDataNascita()));
+		} catch (ParseException ex) {
+			super.boxDataNascita.setEnabled(false);
+			MessageBox.showError(getTitle(), ex.getMessage());
+		}
 	}
 	
 	private void injectInput() {
@@ -64,15 +74,31 @@ public class FormVenditoreFrame extends AbstractForm<Venditore> {
 		Calendar dataNascita = Calendar.getInstance();
 		dataNascita.setTime(rawData);
 
-		int result = CatalogoVenditori.aggiungiVenditore(codice_venditore, codice_fiscale, nome, cognome, dataNascita);
+		if (super.boxCodiceFiscale.isEnabled()) {
+			
+			int result = CatalogoVenditori.aggiungiVenditore(codice_venditore, codice_fiscale, nome, cognome,dataNascita);
 
-		if (result == 1) {
-			MessageBox.showInformation(TITLE, String.format("Venditore con codice venditore '%s' inserito con successo!", codice_venditore));
-			CatalogoVenditori.salvaCatalogo();
-			dispose();
-		} else if (result == 0) {
-			MessageBox.showWarning(TITLE, "Venditore già presente in archivio!");
-			dispose();
+			if (result == 1) {
+				MessageBox.showInformation(TITLE, String.format("Venditore con codice venditore '%s' inserito con successo!", codice_venditore));
+				CatalogoVenditori.salvaCatalogo();
+				dispose();
+			} else if (result == 0) {
+				MessageBox.showWarning(TITLE, "Venditore già presente in archivio!");
+				dispose();
+			}
+			
+		} else {
+			
+			int result = CatalogoVenditori.modificaVenditore(codice_venditore, codice_fiscale, nome, cognome, dataNascita);
+
+			if (result == 1) {
+				MessageBox.showInformation(TITLE, String.format("Venditore con codice venditore '%s' modificato con successo!", codice_venditore));
+				CatalogoVenditori.salvaCatalogo();
+				dispose();
+			} else if (result == 0) {
+				MessageBox.showWarning(TITLE, "Venditore non presente in archivio!");
+				dispose();
+			}
 		}
 			
 	}

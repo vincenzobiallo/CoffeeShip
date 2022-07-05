@@ -36,7 +36,18 @@ public class CatalogoListini {
 		return clone;
 	}
 	
-	private static Listino getListino(Barca barca) {
+	public static Set<Listino> getArticoli() {
+		
+		Set<Listino> clone = new HashSet<Listino>();
+		
+		for (Listino articolo : listini)
+			if (!articolo.isVenduto())
+				clone.add((Listino) articolo.clone());
+		
+		return clone;
+	}
+	
+	public static Listino getListino(Barca barca) {
 		
 		for (Listino listino : listini) {
 			if (listino.getBarca().equals(barca))
@@ -44,6 +55,20 @@ public class CatalogoListini {
 		}
 		
 		return null;
+	}
+	
+	public static boolean aggiungiListino(String numero_serie, double prezzo, double canone) {
+		
+		try {
+			Listino listino = new Listino(numero_serie, prezzo, canone);
+			listini.remove(listino);
+			listini.add(listino);
+		} catch (BarcaException ex) {
+			MessageBox.showError(null, ex.getMessage());
+			return false;
+		}
+		
+		return true;
 	}
 	
 	public static void caricaCatalogo() throws BarcaException, ContrattoException, IOException, ParseException {
@@ -69,21 +94,47 @@ public class CatalogoListini {
 			Listino listino = new Listino(numero_barca, prezzo, canone);
 			
 			JSONObject vendita = obj.getJSONObject("contratto_vendita");
-			//JSONObject noleggio = obj.getJSONObject("contratto_noleggio");
+			JSONArray noleggi = obj.getJSONArray("contratti_noleggio");
 			
-			if (vendita != null) {
+			if (!vendita.isEmpty()) {
 				
 				String codice_venditore = vendita.getString("venditore");
 				String codice_cliente = vendita.getString("cliente");
 				double prezzo_effettivo = vendita.getDouble("prezzo");
-				Date rawData = new SimpleDateFormat("dd/MM/yyyy").parse((String) obj.getString("data"));
+				Date rawData = new SimpleDateFormat("dd/MM/yyyy").parse((String) vendita.getString("data"));
 				
 				Calendar data = Calendar.getInstance();
 				data.setTime(rawData);				
 				
 				listino.setContrattoVendita(codice_venditore, codice_cliente, prezzo_effettivo, data);
+			}
+			
+			if (!noleggi.isEmpty()) {
+
+				for (Object subinstance : noleggi) {
+					
+					JSONObject subobj = (JSONObject) subinstance;
+					
+					String codice_venditore = subobj.getString("venditore");
+					String codice_cliente = subobj.getString("cliente");
+					Date rawDataInizio = new SimpleDateFormat("dd/MM/yyyy").parse((String) subobj.getString("data_inizio"));
+					Date rawDataFine = new SimpleDateFormat("dd/MM/yyyy").parse((String) subobj.getString("data_fine"));
+					double canone_eff = subobj.getDouble("canone");
+					double penale = subobj.getDouble("penale");
+					boolean terminato = subobj.getBoolean("terminato");
+					
+					Calendar dataInizio = Calendar.getInstance();
+					dataInizio.setTime(rawDataInizio);
+					
+					Calendar dataFine = Calendar.getInstance();
+					dataFine.setTime(rawDataFine);
+					
+					listino.addContrattoNoleggio(codice_venditore, codice_cliente, canone_eff, penale, dataInizio, dataFine, terminato);				
+				}
 				
 			}
+			
+			listini.add(listino);
 			
 		}
 
@@ -99,6 +150,7 @@ public class CatalogoListini {
 			
 			obj.put("numero_barca", listino.getBarca().getNumeroSerie());
 			obj.put("prezzo_standard", listino.getPrezzoStandard());
+			obj.put("canone_standard", listino.getCanoneStandard());
 			
 			if (listino.isVenduto()) {
 				
@@ -111,6 +163,32 @@ public class CatalogoListini {
 				
 				obj.put("contratto_vendita", vendita);
 				
+			} else {
+				obj.put("contratto_vendita", new JSONObject());
+			}
+			
+			if (listino.getContrattiNoleggio().length != 0) {
+				
+				JSONArray noleggi = new JSONArray();
+				
+				for (ContrattoNoleggio contratto : listino.getContrattiNoleggio()) {
+					
+					JSONObject instance = new JSONObject();
+					
+					instance.put("venditore", contratto.getVenditore().getCodiceVenditore());
+					instance.put("cliente", contratto.getCliente().getCodiceFiscale());
+					instance.put("data_inizio", contratto.getDataInizio());
+					instance.put("data_fine", contratto.getDataFine());
+					instance.put("canone", contratto.getCanone());
+					instance.put("penale", contratto.getPenale());
+					instance.put("terminato", contratto.isTerminato());
+					
+					noleggi.put(instance);
+				}
+				
+				obj.put("contratti_noleggio", noleggi);
+			} else {
+				obj.put("contratti_noleggio", new JSONArray());
 			}
 
 			json.put(obj);
@@ -127,14 +205,39 @@ public class CatalogoListini {
 		
 	}
 	
-	public void vendiBarca(String numero_serie, String codice_cliente, String codice_venditore, double prezzo, Calendar data) throws VenditaException, ContrattoException {
+	public static boolean vendiBarca(String numero_serie, String codice_cliente, String codice_venditore, double prezzo, Calendar data) throws VenditaException, ContrattoException {
 		
 		Barca barca = CatalogoBarche.getBarca(numero_serie);
 		Listino listino = getListino(barca);
+		
 		if (listino == null)
 			throw new VenditaException("La Barca selezionata non ha un listino!");
 		
+		if (listino.isVenduto())
+			return false;
+		
 		listino.setContrattoVendita(codice_venditore, codice_cliente, prezzo, data);
+		return true;
+	}
+	
+	public static boolean noleggiaBarca(String numero_serie, String codice_cliente, String codice_venditore, double canone, double penale, Calendar dataInizio, Calendar dataFine) throws VenditaException, ContrattoException {
+		
+		Barca barca = CatalogoBarche.getBarca(numero_serie);
+		Listino listino = getListino(barca);
+		
+		if (listino == null)
+			throw new VenditaException("La Barca selezionata non ha un listino!");
+		
+		try {
+			if (listino.isNoleggiato(dataInizio.getTime(), dataFine.getTime()))
+				throw new ContrattoException("La Barca è già sotto noleggio in todo o in parte nel periodo selezionato!");
+		} catch (ParseException ex) {
+			ex.printStackTrace();
+			return false;
+		}
+		
+		listino.addContrattoNoleggio(codice_venditore, codice_cliente, canone, penale, dataInizio, dataFine, false);
+		return true;
 	}
 
 }

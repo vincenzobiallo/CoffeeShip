@@ -1,1 +1,23 @@
-[]
+[
+    {
+        "codice_fiscale": "BLLCST04M12A662P",
+        "cognome": "Biallo",
+        "data_nascita": "12/01/2004",
+        "codice_venditore": "VEND0002",
+        "nome": "Cristian"
+    },
+    {
+        "codice_fiscale": "BLLVCN01M08A662P",
+        "cognome": "Biallo",
+        "data_nascita": "08/08/2001",
+        "codice_venditore": "VEND0001",
+        "nome": "Vincenzo"
+    },
+    {
+        "codice_fiscale": "CSTRFF27A11A662P",
+        "cognome": "Castrigno",
+        "data_nascita": "27/11/2001",
+        "codice_venditore": "VEND0003",
+        "nome": "Raffaele"
+    }
+]

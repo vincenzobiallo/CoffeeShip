@@ -1,0 +1,49 @@
+[
+    {
+        "canone_standard": 50,
+        "prezzo_standard": 4550,
+        "numero_barca": "444422669418",
+        "contratto_vendita": {},
+        "contratti_noleggio": [
+            {
+                "venditore": "VEND0001",
+                "penale": 3,
+                "cliente": "LARNGL71D25C129R",
+                "data_inizio": "05/07/2022",
+                "canone": 49,
+                "data_fine": "12/07/2022",
+				"terminato": false
+            },
+            {
+                "venditore": "VEND0002",
+                "penale": 2,
+                "cliente": "LARNGL71D25C129R",
+                "data_inizio": "12/06/2022",
+                "canone": 50,
+                "data_fine": "13/06/2022",
+				"terminato": false
+            },
+            {
+                "venditore": "VEND0002",
+                "penale": 2.3000000000000003,
+                "cliente": "LARNGL71D25C129R",
+                "data_inizio": "20/07/2022",
+                "canone": 50.5,
+                "data_fine": "31/07/2022",
+				"terminato": false
+            }
+        ]
+    },
+    {
+        "canone_standard": 33,
+        "prezzo_standard": 3333,
+        "numero_barca": "123456781111",
+        "contratto_vendita": {
+            "venditore": "VEND0001",
+            "cliente": "RZZCCT80D46F158A",
+            "data": "04/07/2022",
+            "prezzo": 55
+        },
+        "contratti_noleggio": []
+    }
+]

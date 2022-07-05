@@ -17,14 +17,14 @@ import it.vincenzobiallo.coffeeship.utils.MessageBox;
 import javax.swing.JTextField;
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
-import java.awt.Dialog.ModalExclusionType;
 
-public class FormBarcaFrame extends JFrame {
+public class FormBarcaFrame extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private static final String title = "Gestione Barche";
@@ -41,19 +41,89 @@ public class FormBarcaFrame extends JFrame {
 	private JRadioButton modelloBase;
 	private JRadioButton modelloMedio;
 	private JRadioButton modelloAvanzato;
+	
+	private JButton btnAction;
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public FormBarcaFrame(Barca... istance) {
+	public FormBarcaFrame() {
+		initialize();
+		this.btnAction.setText("Aggiungi Barca");
+		btnAction.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 
-		Barca barca = null;
-		if (istance.length > 1)
-			throw new IllegalArgumentException("Troppe istanze passate come parametro!");
-		else if (istance.length == 1)
-			barca = istance[0];
+				String numero_serie = boxNumeroSerie.getText();
+				Scafo scafo = (Scafo) boxScafo.getSelectedItem();
+				Chiglia chiglia = (Chiglia) boxChiglia.getSelectedItem();
+				Deriva deriva = (Deriva) boxDeriva.getSelectedItem();
+				Alberatura alberatura = (Alberatura) boxAlberatura.getSelectedItem();
+				Timone timone = (Timone) boxTimone.getSelectedItem();
 
+				ModelloBarca modello = null;
+
+				if (modelloBase.isSelected())
+					modello = ModelloBarca.BASE;
+				else if (modelloMedio.isSelected())
+					modello = ModelloBarca.MEDIA;
+				else if (modelloAvanzato.isSelected())
+					modello = ModelloBarca.AVANZATA;
+
+				int result = CatalogoBarche.aggiungiBarca(numero_serie, scafo, chiglia, deriva, alberatura, timone, modello);
+
+				if (result == 1) {
+					MessageBox.showInformation(title, String.format("Barca con numero serie '%s' inserita con successo!", numero_serie));
+					CatalogoBarche.salvaCatalogo();
+					dispose();
+				} else if (result == 0) {
+					MessageBox.showWarning(title, String.format("Barca con numero serie '%s' già presente in Catalogo!", numero_serie));
+					dispose();
+				}
+
+			}
+		});
+	}
+	
+	public FormBarcaFrame(Barca barca) {
+		
+		if (barca == null)
+			throw new IllegalArgumentException("L'istanza da modificare non può essere vuota!");
+		
+		initialize();
+		this.btnAction.setText("Modifica Barca");
+		this.boxNumeroSerie.setEnabled(false);
+		this.modelloBase.setEnabled(false);
+		this.modelloMedio.setEnabled(false);
+		this.modelloAvanzato.setEnabled(false);
+		btnAction.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				String numero_serie = barca.getNumeroSerie();
+				Scafo scafo = (Scafo) barca.getScafo();
+				Chiglia chiglia = barca.getChiglia();
+				Deriva deriva = barca.getDeriva();
+				Alberatura alberatura = barca.getAlberatura();
+				Timone timone = barca.getTimone();
+
+				ModelloBarca modello = barca.getModello();
+
+				int result = CatalogoBarche.modificaBarca(numero_serie, scafo, chiglia, deriva, alberatura, timone, modello);
+
+				if (result == 1) {
+					MessageBox.showInformation(title, String.format("Barca con numero serie '%s' modificata con successo!", numero_serie));
+					CatalogoBarche.salvaCatalogo();
+					dispose();
+				} else if (result == 0) {
+					MessageBox.showWarning(title, String.format("Barca con numero serie '%s' non presente in Catalogo!", numero_serie));
+					dispose();
+				}
+
+			}
+		});
+	}
+	
+	private void initialize() {
+		setTitle(title);
+		setModal(true);
 		setModalExclusionType(ModalExclusionType.NO_EXCLUDE);
 		setType(Type.POPUP);
-		setTitle(title);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 300, 325);
@@ -80,7 +150,7 @@ public class FormBarcaFrame extends JFrame {
 		labelScafo.setBounds(10, 46, 154, 14);
 		panel.add(labelScafo);
 
-		this.boxScafo = new JComboBox(Scafo.values());
+		this.boxScafo = new JComboBox<Scafo>(Scafo.values());
 		labelScafo.setLabelFor(boxScafo);
 		boxScafo.setBounds(174, 42, 100, 22);
 		panel.add(boxScafo);
@@ -92,7 +162,7 @@ public class FormBarcaFrame extends JFrame {
 		labelChiglia.setBounds(10, 79, 154, 14);
 		panel.add(labelChiglia);
 
-		boxChiglia = new JComboBox(Chiglia.values());
+		boxChiglia = new JComboBox<Chiglia>(Chiglia.values());
 		boxChiglia.setBounds(174, 75, 100, 22);
 		panel.add(boxChiglia);
 
@@ -102,7 +172,7 @@ public class FormBarcaFrame extends JFrame {
 		labelDeriva.setBounds(10, 112, 154, 14);
 		panel.add(labelDeriva);
 
-		this.boxDeriva = new JComboBox(Deriva.values());
+		this.boxDeriva = new JComboBox<Deriva>(Deriva.values());
 		labelDeriva.setLabelFor(boxDeriva);
 		boxDeriva.setBounds(174, 108, 100, 22);
 		panel.add(boxDeriva);
@@ -113,7 +183,7 @@ public class FormBarcaFrame extends JFrame {
 		lblSelezionaAlberatura.setBounds(10, 145, 154, 14);
 		panel.add(lblSelezionaAlberatura);
 
-		this.boxAlberatura = new JComboBox(Alberatura.values());
+		this.boxAlberatura = new JComboBox<Alberatura>(Alberatura.values());
 		lblSelezionaAlberatura.setLabelFor(boxAlberatura);
 		boxAlberatura.setBounds(174, 141, 100, 22);
 		panel.add(boxAlberatura);
@@ -124,7 +194,7 @@ public class FormBarcaFrame extends JFrame {
 		labelTimone.setBounds(10, 178, 154, 14);
 		panel.add(labelTimone);
 
-		this.boxTimone = new JComboBox(Timone.values());
+		this.boxTimone = new JComboBox<Timone>(Timone.values());
 		boxTimone.setBounds(174, 174, 100, 22);
 		panel.add(boxTimone);
 
@@ -151,57 +221,10 @@ public class FormBarcaFrame extends JFrame {
 		JLabel labelModello = new JLabel("Seleziona Modello:");
 		labelModello.setBounds(10, 207, 264, 14);
 		this.panel.add(labelModello);
-
-		if (barca == null) {
-
-			// Bottone Aggiungi
-
-			JButton btnAggiungi = new JButton("Aggiungi Barca");
-			btnAggiungi.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-
-					String numero_serie = boxNumeroSerie.getText();
-					Scafo scafo = (Scafo) boxScafo.getSelectedItem();
-					Chiglia chiglia = (Chiglia) boxChiglia.getSelectedItem();
-					Deriva deriva = (Deriva) boxDeriva.getSelectedItem();
-					Alberatura alberatura = (Alberatura) boxAlberatura.getSelectedItem();
-					Timone timone = (Timone) boxTimone.getSelectedItem();
-
-					ModelloBarca modello = null;
-
-					if (modelloBase.isSelected())
-						modello = ModelloBarca.BASE;
-					else if (modelloMedio.isSelected())
-						modello = ModelloBarca.MEDIA;
-					else if (modelloAvanzato.isSelected())
-						modello = ModelloBarca.AVANZATA;
-
-					boolean result = CatalogoBarche.aggiungiBarca(numero_serie, scafo, chiglia, deriva, alberatura, timone, modello);
-
-					if (result) {
-						MessageBox.showInformation(title, String.format("Barca con numero serie '%s' inserita con successo!", numero_serie));
-						CatalogoBarche.salvaCatalogo();
-						dispose();
-					} else {
-						MessageBox.showWarning(title, String.format("Barca con numero serie '%s' già presente in Catalogo!", numero_serie));
-						dispose();
-					}
-
-				}
-			});
-			btnAggiungi.setBounds(10, 258, 264, 23);
-			panel.add(btnAggiungi);
-
-		} else {
-			this.boxNumeroSerie.setText(barca.getNumeroSerie());
-			this.boxScafo.setSelectedItem(barca.getScafo());
-			this.boxChiglia.setSelectedItem(barca.getChiglia());
-			this.boxDeriva.setSelectedItem(barca.getDeriva());
-			this.boxAlberatura.setSelectedItem(barca.getAlberatura());
-			this.boxTimone.setSelectedItem(barca.getTimone());
-			
-			// TODO Modello
-		}
-
+		
+		// Bottone Aggiungi
+		btnAction = new JButton();
+		btnAction.setBounds(10, 258, 264, 23);
+		panel.add(btnAction);
 	}
 }

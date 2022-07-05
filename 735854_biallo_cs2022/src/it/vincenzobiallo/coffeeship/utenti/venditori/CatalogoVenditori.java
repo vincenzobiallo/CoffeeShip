@@ -40,7 +40,7 @@ public class CatalogoVenditori {
 				if (venditore.getCodiceFiscale().equalsIgnoreCase(value))
 					return venditore;
 			} else {
-				if (venditore.getCodiceFiscale().equalsIgnoreCase(value))
+				if (venditore.getCodiceVenditore().equalsIgnoreCase(value))
 					return venditore;
 			}
 					
@@ -114,6 +114,27 @@ public class CatalogoVenditori {
 			Venditore venditore = new Venditore(codice_venditore, codice_fiscale, nome, cognome, dataNascita);
 			
 			if (!venditori.contains(venditore)) {
+				venditori.add(venditore);
+				salvaCatalogo();
+				return 1;			
+			}
+			
+		} catch (PersonaException ex) {
+			MessageBox.showWarning(ex.getTitle(), ex.getMessage());
+			return -1;
+		}
+		
+		return 0;
+	}
+	
+	public static int modificaVenditore(String codice_venditore, String codice_fiscale, String nome, String cognome, Calendar dataNascita) {
+		
+		try {
+
+			Venditore venditore = new Venditore(codice_venditore, codice_fiscale, nome, cognome, dataNascita);
+			
+			if (venditori.contains(venditore)) {
+				venditori.remove(venditore);
 				venditori.add(venditore);
 				salvaCatalogo();
 				return 1;			

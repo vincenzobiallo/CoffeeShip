@@ -107,7 +107,7 @@ public class CatalogoBarche {
 					
 	}
 	
-	public static boolean aggiungiBarca(String numero_serie, Scafo scafo, Chiglia chiglia, Deriva deriva, Alberatura alberatura, Timone timone, ModelloBarca modello) {
+	public static int aggiungiBarca(String numero_serie, Scafo scafo, Chiglia chiglia, Deriva deriva, Alberatura alberatura, Timone timone, ModelloBarca modello) {
 		
 		Barca barca = null;
 		
@@ -130,14 +130,50 @@ public class CatalogoBarche {
 			if (!barche.contains(barca)) {	
 				barche.add(barca);
 				salvaCatalogo();
-				return true;		
+				return 1;		
 			}
 					
 		} catch(BarcaException ex) {
 			MessageBox.showError("Aggiungi Barca", ex.getMessage());
+			return -1;
 		}
 			
-		return false;
+		return 0;
+	}
+	
+	public static int modificaBarca(String numero_serie, Scafo scafo, Chiglia chiglia, Deriva deriva, Alberatura alberatura, Timone timone, ModelloBarca modello) {
+		
+		Barca barca = null;
+		
+		try {
+			
+			switch(modello) {
+			case BASE:
+				barca = new BarcaBase(numero_serie, scafo, chiglia, deriva, alberatura, timone);
+				break;
+			case MEDIA:
+				barca = new BarcaMedia(numero_serie, scafo, chiglia, deriva, alberatura, timone);
+				break;
+			case AVANZATA:
+				barca = new BarcaAvanzata(numero_serie, scafo, chiglia, deriva, alberatura, timone);
+				break;
+			default:
+				throw new BarcaException("Il modello della Barca non è valido!");
+			}
+			
+			if (barche.contains(barca)) {
+				barche.remove(barca);
+				barche.add(barca);
+				salvaCatalogo();
+				return 1;		
+			}
+					
+		} catch(BarcaException ex) {
+			MessageBox.showError("Modifica Barca", ex.getMessage());
+			return -1;
+		}
+			
+		return 0;
 	}
 	
 	public static boolean rimuoviBarca(String numero_serie) {

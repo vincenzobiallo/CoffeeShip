@@ -1,5 +1,7 @@
 package it.vincenzobiallo.coffeeship.forms.utenti;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -27,7 +29,12 @@ public class FormClienteFrame extends AbstractForm<Cliente> {
 		super.boxCodiceFiscale.setText(cliente.getCodiceFiscale());
 		super.boxNome.setText(cliente.getNome());
 		super.boxCognome.setText(cliente.getCognome());
-		super.boxDataNascita.setDate(super.boxDataNascita.getDate());
+		try {
+			super.boxDataNascita.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(cliente.getDataNascita()));
+		} catch (ParseException ex) {
+			super.boxDataNascita.setEnabled(false);
+			MessageBox.showError(getTitle(), ex.getMessage());
+		}
 	}
 
 	@Override
@@ -40,17 +47,32 @@ public class FormClienteFrame extends AbstractForm<Cliente> {
 
 		Calendar dataNascita = Calendar.getInstance();
 		dataNascita.setTime(rawData);
+		
+		if (super.boxCodiceFiscale.isEnabled()) {
+			int result = CatalogoClienti.aggiungiCliente(codice_fiscale, nome, cognome, dataNascita);
 
-		int result = CatalogoClienti.aggiungiCliente(codice_fiscale, nome, cognome, dataNascita);
+			if (result == 1) {
+				MessageBox.showInformation(TITLE,String.format("Cliente con codice fiscale '%s' inserito con successo!", codice_fiscale));
+				CatalogoClienti.salvaCatalogo();
+				dispose();
+			} else if (result == 0) {
+				MessageBox.showWarning(TITLE, "Cliente già presente in archivio!");
+				dispose();
+			}
+		} else {
+			int result = CatalogoClienti.modificaCliente(codice_fiscale, nome, cognome, dataNascita);
 
-		if (result == 1) {
-			MessageBox.showInformation(TITLE,String.format("Cliente con codice fiscale '%s' inserito con successo!", codice_fiscale));
-			CatalogoClienti.salvaCatalogo();
-			dispose();
-		} else if (result == 0) {
-			MessageBox.showWarning(TITLE, "Cliente già presente in archivio!");
-			dispose();
+			if (result == 1) {
+				MessageBox.showInformation(TITLE,String.format("Cliente con codice fiscale '%s' modificato con successo!", codice_fiscale));
+				CatalogoClienti.salvaCatalogo();
+				dispose();
+			} else if (result == 0) {
+				MessageBox.showWarning(TITLE, "Cliente non presente in archivio!");
+				dispose();
+			}
 		}
+
+		
 			
 	}
 }
