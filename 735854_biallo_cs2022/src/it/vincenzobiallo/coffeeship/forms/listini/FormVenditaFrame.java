@@ -37,21 +37,19 @@ public class FormVenditaFrame extends JDialog {
 	private JSpinner prezzoStandard;
 	private JSpinner prezzoApplicato;
 
-	public FormVenditaFrame() {
+	public FormVenditaFrame() throws VenditaException {
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setTitle(title);
 		getContentPane().setLayout(null);
 		
 		choiceBarca = new Choice();
-		for (Listino listino : CatalogoListini.getArticoli()) {
+		for (Listino listino : CatalogoListini.getArticoli(true)) {
 			if (!listino.isVenduto())
 				choiceBarca.add(listino.getBarca().getNumeroSerie());
 		}
 		
-		if (choiceBarca.getItemCount() == 0) {
-			MessageBox.showWarning(title, "Non sono disponibili Barche per la vendita!");
-			dispose();
-		}
+		if (choiceBarca.getItemCount() == 0)
+			throw new VenditaException("Non sono disponibili Barche per la vendita!");
 		
 		choiceBarca.setBounds(10, 31, 264, 20);
 		getContentPane().add(choiceBarca);

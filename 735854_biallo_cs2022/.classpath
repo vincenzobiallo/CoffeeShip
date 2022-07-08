@@ -8,5 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="D:/Documenti/GitHub/CoffeeShip/org.json.jar"/>
 	<classpathentry kind="lib" path="D:/Documenti/GitHub/CoffeeShip/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="D:/Documenti/GitHub/CoffeeShip/itextpdf-5.5.9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

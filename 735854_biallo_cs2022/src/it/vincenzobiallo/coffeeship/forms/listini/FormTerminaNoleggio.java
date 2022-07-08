@@ -23,6 +23,8 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.awt.event.ItemEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class FormTerminaNoleggio extends JDialog {
 
@@ -61,7 +63,7 @@ public class FormTerminaNoleggio extends JDialog {
 				choiceInizio.setEnabled(true);
 			}
 		});
-		for (Listino listino : CatalogoListini.getArticoli())
+		for (Listino listino : CatalogoListini.getArticoli(false))
 			if (listino.isNoleggiato())
 				choiceBarca.add(listino.getBarca().getNumeroSerie());
 		if (choiceBarca.getItemCount() == 0) {
@@ -85,13 +87,13 @@ public class FormTerminaNoleggio extends JDialog {
 		contentPanel.add(choiceInizio);
 		updateFields();
 
-		JLabel lblNewLabel = new JLabel("Barca:");
-		lblNewLabel.setBounds(10, 11, 108, 14);
-		contentPanel.add(lblNewLabel);
+		JLabel labelBarca = new JLabel("Barca:");
+		labelBarca.setBounds(10, 11, 108, 14);
+		contentPanel.add(labelBarca);
 
-		JLabel lblNewLabel_1 = new JLabel("Venditore:");
-		lblNewLabel_1.setBounds(10, 65, 104, 14);
-		contentPanel.add(lblNewLabel_1);
+		JLabel labelVenditore = new JLabel("Venditore:");
+		labelVenditore.setBounds(10, 65, 104, 14);
+		contentPanel.add(labelVenditore);
 
 		boxVenditore = new JTextField();
 		boxVenditore.setEditable(false);
@@ -99,9 +101,9 @@ public class FormTerminaNoleggio extends JDialog {
 		contentPanel.add(boxVenditore);
 		boxVenditore.setColumns(10);
 
-		JLabel lblNewLabel_1_1 = new JLabel("Cliente:");
-		lblNewLabel_1_1.setBounds(10, 93, 104, 14);
-		contentPanel.add(lblNewLabel_1_1);
+		JLabel labelCliente = new JLabel("Cliente:");
+		labelCliente.setBounds(10, 93, 104, 14);
+		contentPanel.add(labelCliente);
 
 		boxCliente = new JTextField();
 		boxCliente.setEditable(false);
@@ -109,9 +111,9 @@ public class FormTerminaNoleggio extends JDialog {
 		boxCliente.setBounds(124, 90, 150, 20);
 		contentPanel.add(boxCliente);
 
-		JLabel lblNewLabel_1_1_1 = new JLabel("Penale da Versare:");
-		lblNewLabel_1_1_1.setBounds(10, 149, 104, 14);
-		contentPanel.add(lblNewLabel_1_1_1);
+		JLabel labelPenale = new JLabel("Penale da Versare:");
+		labelPenale.setBounds(10, 149, 104, 14);
+		contentPanel.add(labelPenale);
 
 		boxPenale = new JTextField();
 		boxPenale.setEditable(false);
@@ -119,9 +121,9 @@ public class FormTerminaNoleggio extends JDialog {
 		boxPenale.setBounds(124, 146, 150, 20);
 		contentPanel.add(boxPenale);
 
-		JLabel lblNewLabel_1_1_1_1 = new JLabel("Data Fine:");
-		lblNewLabel_1_1_1_1.setBounds(10, 121, 104, 14);
-		contentPanel.add(lblNewLabel_1_1_1_1);
+		JLabel labelDataFine = new JLabel("Data Fine:");
+		labelDataFine.setBounds(10, 121, 104, 14);
+		contentPanel.add(labelDataFine);
 
 		boxDataFine = new JTextField();
 		boxDataFine.setEditable(false);
@@ -130,15 +132,34 @@ public class FormTerminaNoleggio extends JDialog {
 		contentPanel.add(boxDataFine);
 
 		JButton btnTermina = new JButton("Termina Noleggio");
+		btnTermina.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (MessageBox.askQuestion("Terminare Noleggio?", "Sei sicuro di voler terminare questo noleggio?")) {
+					String codice_barca = choiceBarca.getSelectedItem();
+					Barca barca = CatalogoBarche.getBarca(codice_barca);
+					Listino listino = CatalogoListini.getListino(barca);
+					
+					String dataInizio = choiceInizio.getSelectedItem();
+
+					ContrattoNoleggio[] contratti = getNoleggi(listino);
+					for (ContrattoNoleggio contratto : contratti)
+						if (contratto.getDataInizio().equalsIgnoreCase(dataInizio))
+							contratto.setTerminato(true);
+					
+					MessageBox.showInformation("Noleggio Terminato", "Noleggio Terminato con successo!");
+					CatalogoListini.salvaCatalogo();
+					dispose();
+				}
+			}
+		});
 		btnTermina.setBounds(10, 177, 264, 23);
 		contentPanel.add(btnTermina);
 
-		JLabel lblInizioNoleggio = new JLabel("Inizio Noleggio:");
-		lblInizioNoleggio.setBounds(10, 36, 108, 14);
-		contentPanel.add(lblInizioNoleggio);
+		JLabel labelDataInizio = new JLabel("Inizio Noleggio:");
+		labelDataInizio.setBounds(10, 36, 108, 14);
+		contentPanel.add(labelDataInizio);
 	}
 
-	@SuppressWarnings("deprecation")
 	private void updateFields() {
 
 		String dataInizio = choiceInizio.getSelectedItem();

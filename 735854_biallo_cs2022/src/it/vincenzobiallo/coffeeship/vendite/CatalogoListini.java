@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import it.vincenzobiallo.coffeeship.barche.Barca;
 import it.vincenzobiallo.coffeeship.barche.CatalogoBarche;
+import it.vincenzobiallo.coffeeship.barche.ModelloBarca;
 import it.vincenzobiallo.coffeeship.exceptions.BarcaException;
 import it.vincenzobiallo.coffeeship.exceptions.ContrattoException;
 import it.vincenzobiallo.coffeeship.exceptions.VenditaException;
@@ -36,13 +37,22 @@ public class CatalogoListini {
 		return clone;
 	}
 	
-	public static Set<Listino> getArticoli() {
+	public static Set<Listino> getArticoli(boolean vendita) {
 		
 		Set<Listino> clone = new HashSet<Listino>();
 		
-		for (Listino articolo : listini)
-			if (!articolo.isVenduto())
-				clone.add((Listino) articolo.clone());
+		for (Listino articolo : listini) {
+			if (!articolo.isVenduto()) {
+				if (vendita) {
+					if ((articolo.getBarca().getModello() == ModelloBarca.MEDIA) || (articolo.getBarca().getModello() == ModelloBarca.AVANZATA))
+						clone.add((Listino) articolo.clone());
+				} else {
+					if ((articolo.getBarca().getModello() == ModelloBarca.BASE))
+						clone.add((Listino) articolo.clone());
+				}
+			}		
+		}
+			
 		
 		return clone;
 	}

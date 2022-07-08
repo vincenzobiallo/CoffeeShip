@@ -39,21 +39,19 @@ public class FormNoleggioFrame extends JDialog {
 	private JSpinner canoneStandard;
 	private JSpinner canoneApplicato;
 
-	public FormNoleggioFrame() {
+	public FormNoleggioFrame() throws VenditaException {
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setTitle(title);
 		getContentPane().setLayout(null);
 		
 		choiceBarca = new Choice();
-		for (Listino listino : CatalogoListini.getArticoli()) {
+		for (Listino listino : CatalogoListini.getArticoli(false)) {
 			if (!listino.isVenduto())
 				choiceBarca.add(listino.getBarca().getNumeroSerie());
 		}
 		
-		if (choiceBarca.getItemCount() == 0) {
-			MessageBox.showWarning(title, "Non sono disponibili Barche per il noleggio!");
-			dispose();
-		}
+		if (choiceBarca.getItemCount() == 0)
+			throw new VenditaException("Non sono disponibili Barche per il noleggio!");
 		
 		choiceBarca.setBounds(10, 31, 264, 20);
 		getContentPane().add(choiceBarca);
@@ -127,35 +125,39 @@ public class FormNoleggioFrame extends JDialog {
 				Cliente cliente = CatalogoClienti.getCliente(codice_cliente);
 				
 				String codice_venditore = choiceVenditore.getSelectedItem();
-				Venditore venditore = CatalogoVenditori.getVenditore(codice_venditore);
+				Venditore venditore = CatalogoVenditori.getVenditore(codice_venditore);		
 				
-				Calendar dataInizio = Calendar.getInstance();
-				dataInizio.setTime(boxDataInizio.getDate());
-				Calendar dataFine = Calendar.getInstance();
-				dataFine.setTime(boxDataFine.getDate());
-				
-				if ((barca == null) || (cliente == null) || (venditore == null) || (dataInizio.after(dataFine))) {
+				if ((barca == null) || (cliente == null) || (venditore == null) || (boxDataInizio.getDate() == null) || (boxDataFine.getDate() == null)) {
 					MessageBox.showWarning(title, "I dati inseriti non sono corretti!");
-				} else {	
+				} else {
 					
-					double canone_standard = Double.parseDouble(String.valueOf(canoneStandard.getValue()));
-					double canone_applicato = Double.parseDouble(String.valueOf(canoneApplicato.getValue()));
-					double penale_applicata = Double.parseDouble(String.valueOf(penale.getValue()));
+					Calendar dataInizio = Calendar.getInstance();
+					dataInizio.setTime(boxDataInizio.getDate());
+					Calendar dataFine = Calendar.getInstance();
+					dataFine.setTime(boxDataFine.getDate());
 					
-					if (MessageBox.askQuestion(title, String.format("Sei sicuro di voler noleggiare questa Barca?\nSconto effettuato sul canone : %f", (canone_standard - canone_applicato)))) {
+					if (!dataInizio.after(dataFine)) {
+						double canone_standard = Double.parseDouble(String.valueOf(canoneStandard.getValue()));
+						double canone_applicato = Double.parseDouble(String.valueOf(canoneApplicato.getValue()));
+						double penale_applicata = Double.parseDouble(String.valueOf(penale.getValue()));
 						
-						Calendar today = Calendar.getInstance();
-						today.setTime(Calendar.getInstance().getTime());
-						try {
-							CatalogoListini.noleggiaBarca(barca.getNumeroSerie(), cliente.getCodiceFiscale(), venditore.getCodiceVenditore(), canone_applicato, penale_applicata, dataInizio, dataFine);
-							CatalogoListini.salvaCatalogo();
-							MessageBox.showInformation(title, "Barca Noleggiata con successo!");				
-							dispose();
-						} catch (VenditaException | ContrattoException ex) {
-							MessageBox.showWarning(codice_cliente, ex.getMessage());
-						}
-				
-					}				
+						if (MessageBox.askQuestion(title, String.format("Sei sicuro di voler noleggiare questa Barca?\nSconto effettuato sul canone : %f", (canone_standard - canone_applicato)))) {
+							
+							Calendar today = Calendar.getInstance();
+							today.setTime(Calendar.getInstance().getTime());
+							try {
+								CatalogoListini.noleggiaBarca(barca.getNumeroSerie(), cliente.getCodiceFiscale(), venditore.getCodiceVenditore(), canone_applicato, penale_applicata, dataInizio, dataFine);
+								CatalogoListini.salvaCatalogo();
+								MessageBox.showInformation(title, "Barca Noleggiata con successo!");				
+								dispose();
+							} catch (VenditaException | ContrattoException ex) {
+								MessageBox.showWarning(codice_cliente, ex.getMessage());
+							}
+					
+						}	
+					} else {
+						MessageBox.showWarning(title, "La data di inizio non può essere superiore alla fine!");
+					}
 				}			
 			}
 		});

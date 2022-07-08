@@ -13,15 +13,19 @@ import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
 import javax.swing.UIManager;
 
+import it.vincenzobiallo.coffeeship.exceptions.VenditaException;
 import it.vincenzobiallo.coffeeship.forms.barche.FormBarcaFrame;
 import it.vincenzobiallo.coffeeship.forms.barche.ListBarcaFrame;
 import it.vincenzobiallo.coffeeship.forms.listini.FormNoleggioFrame;
+import it.vincenzobiallo.coffeeship.forms.listini.FormReportNoleggi;
+import it.vincenzobiallo.coffeeship.forms.listini.FormReportVendite;
 import it.vincenzobiallo.coffeeship.forms.listini.FormTerminaNoleggio;
 import it.vincenzobiallo.coffeeship.forms.listini.FormVenditaFrame;
 import it.vincenzobiallo.coffeeship.forms.utenti.FormClienteFrame;
 import it.vincenzobiallo.coffeeship.forms.utenti.FormVenditoreFrame;
 import it.vincenzobiallo.coffeeship.forms.utenti.ListClientiFrame;
 import it.vincenzobiallo.coffeeship.forms.utenti.ListVenditoriFrame;
+import it.vincenzobiallo.coffeeship.utils.MessageBox;
 
 import java.awt.Dialog.ModalExclusionType;
 
@@ -119,35 +123,65 @@ public class HomeFrame {
 		JMenu menuVendita = new JMenu("Operazioni di Vendita");
 		menuOperazioni.add(menuVendita);
 		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Vendi Barca..");
-		mntmNewMenuItem.addActionListener(new ActionListener() {
+		JMenuItem btnVendiBarca = new JMenuItem("Vendi Barca..");
+		btnVendiBarca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JDialog dialog = new FormVenditaFrame();
+				try {
+					JDialog dialog = new FormVenditaFrame();
+					dialog.setVisible(true);
+				} catch (VenditaException ex) {
+					MessageBox.showWarning("Vendita", ex.getMessage());
+				}		
+			}
+		});
+		menuVendita.add(btnVendiBarca);
+
+		menuVendita.add(new JSeparator());
+		
+		JMenuItem btnReportVendite = new JMenuItem("Stampa Report Vendite..");
+		btnReportVendite.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JDialog dialog = new FormReportVendite();
 				dialog.setVisible(true);
 			}
 		});
-		menuVendita.add(mntmNewMenuItem);
+		menuVendita.add(btnReportVendite);
 		
 		JMenu menuNoleggio = new JMenu("Operazioni di Noleggio");
 		menuOperazioni.add(menuNoleggio);
 		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Noleggia Barca..");
-		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+		JMenuItem btnNoleggiaBarca = new JMenuItem("Noleggia Barca..");
+		btnNoleggiaBarca.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JDialog dialog = new FormNoleggioFrame();
-				dialog.setVisible(true);
+				try {
+					JDialog dialog = new FormNoleggioFrame();
+					dialog.setVisible(true);
+				} catch (VenditaException ex) {
+					MessageBox.showWarning("Noleggio", ex.getMessage());
+				}	
 			}
 		});
-		menuNoleggio.add(mntmNewMenuItem_1);
+		menuNoleggio.add(btnNoleggiaBarca);
 		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Termina Noleggio..");
-		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+		JMenuItem btnTerminaNoleggio = new JMenuItem("Termina Noleggio..");
+		btnTerminaNoleggio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JDialog dialog = new FormTerminaNoleggio();
 				dialog.setVisible(true);
 			}
 		});
-		menuNoleggio.add(mntmNewMenuItem_2);
+		menuNoleggio.add(btnTerminaNoleggio);
+
+		menuNoleggio.add(new JSeparator());
+		
+		JMenuItem btnReportNoleggi = new JMenuItem("Stampa Report Noleggi..");
+		btnReportNoleggi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JDialog dialog = new FormReportNoleggi();
+				dialog.setVisible(true);
+			}
+		});
+		menuNoleggio.add(btnReportNoleggi);
 	}
 
 	

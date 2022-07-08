@@ -8,7 +8,7 @@ import it.vincenzobiallo.coffeeship.exceptions.ContrattoException;
 import it.vincenzobiallo.coffeeship.utenti.clienti.Cliente;
 import it.vincenzobiallo.coffeeship.utenti.venditori.Venditore;
 
-class ContrattoVendita {
+public class ContrattoVendita {
 	
 	private Barca barca;
 	private Cliente cliente;

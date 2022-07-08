@@ -1,5 +1,23 @@
 [
     {
+        "numero_serie": "000000000002",
+        "timone": "INTEGRATO",
+        "chiglia": "LUNGA",
+        "scafo": "MONOSCAFO",
+        "deriva": "PERNO",
+        "alberatura": "SLOOP_ARMO",
+        "modello": "MEDIA"
+    },
+    {
+        "numero_serie": "000000000001",
+        "timone": "SOSPESO",
+        "chiglia": "PINNA",
+        "scafo": "MULTISCAFO",
+        "deriva": "RETRATTILE",
+        "alberatura": "CUTTER",
+        "modello": "AVANZATA"
+    },
+    {
         "numero_serie": "444422669418",
         "timone": "SOSPESO",
         "chiglia": "LUNGA",
