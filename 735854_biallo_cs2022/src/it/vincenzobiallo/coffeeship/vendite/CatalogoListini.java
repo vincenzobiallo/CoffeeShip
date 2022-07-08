@@ -21,11 +21,16 @@ import it.vincenzobiallo.coffeeship.barche.ModelloBarca;
 import it.vincenzobiallo.coffeeship.exceptions.BarcaException;
 import it.vincenzobiallo.coffeeship.exceptions.ContrattoException;
 import it.vincenzobiallo.coffeeship.exceptions.VenditaException;
+import it.vincenzobiallo.coffeeship.utenti.clienti.Cliente;
+import it.vincenzobiallo.coffeeship.utenti.venditori.Venditore;
 import it.vincenzobiallo.coffeeship.utils.MessageBox;
 
 public class CatalogoListini {
 	
 	private static Set<Listino> listini = new HashSet<Listino>();
+	
+	private final static int MAX_CLIENTE = 5;
+	private final static int MAX_VENDITORE = 25;
 	
 	public static Set<Listino> getListini() {
 		
@@ -248,6 +253,46 @@ public class CatalogoListini {
 		
 		listino.addContrattoNoleggio(codice_venditore, codice_cliente, canone, penale, dataInizio, dataFine, false);
 		return true;
+	}
+	
+	public static boolean isLocked(Cliente cliente) {
+		
+		int count = 0;
+		
+		Calendar today = Calendar.getInstance();
+		today.setTime(Calendar.getInstance().getTime());
+		
+		for (Listino listino : getArticoli(false)) {
+			for (ContrattoNoleggio contratto : listino.getContrattiNoleggio())
+				if (contratto.getCliente().equals(cliente) && contratto.getDataStipula().equals(today.getTime())) {
+					count++;
+				}
+		}
+		
+		if (count >= MAX_CLIENTE)
+			return true;
+		
+		return false;
+	}
+	
+	public static boolean isLocked(Venditore venditore) {
+		
+		int count = 0;
+		
+		Calendar today = Calendar.getInstance();
+		today.setTime(Calendar.getInstance().getTime());
+		
+		for (Listino listino : getArticoli(false)) {
+			for (ContrattoNoleggio contratto : listino.getContrattiNoleggio())
+				if (contratto.getVenditore().equals(venditore) && contratto.getDataStipula().equals(today.getTime())) {
+					count++;
+				}
+		}
+		
+		if (count >= MAX_VENDITORE)
+			return true;
+		
+		return false;
 	}
 
 }

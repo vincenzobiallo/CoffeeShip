@@ -39,6 +39,12 @@ public class Persona implements Comparable<Persona>, Cloneable {
 		return dataFormat.format(dataNascita.getTime());
 	}
 	
+	/**
+	 * Imposta il codice fiscale di una persona, controllandone la validità
+	 * 
+	 * @param codice_fiscale da inserire
+	 * @throws PersonaException Se il Codice Fiscale è sintatticamente errato
+	 */
 	private void setCodiceFiscale(String codice_fiscale) throws PersonaException {
 		
 		if (codice_fiscale.length() != 16)
@@ -58,12 +64,12 @@ public class Persona implements Comparable<Persona>, Cloneable {
 	}
 	
 	private void setNome(String nome) {	
-		nome = nome.substring(0, 1).toUpperCase() + nome.substring(1);
+		nome = nome.substring(0, 1).toUpperCase() + nome.substring(1).toLowerCase();
 		this.nome = nome.trim();
 	}
 	
 	private void setCognome(String cognome) {		
-		cognome = cognome.substring(0, 1).toUpperCase() + cognome.substring(1);
+		cognome = cognome.substring(0, 1).toUpperCase() + cognome.substring(1).toLowerCase();
 		this.cognome = cognome.trim();
 	}
 

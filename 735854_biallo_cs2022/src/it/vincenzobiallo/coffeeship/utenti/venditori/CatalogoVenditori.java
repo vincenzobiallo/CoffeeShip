@@ -22,6 +22,10 @@ public class CatalogoVenditori {
 	
 	private static Set<Venditore> venditori = new HashSet<Venditore>();
 	
+	/**
+	 * Ottieni la Lista dei Venditori
+	 * @return Set di Venditori
+	 */
 	public static Set<Venditore> getVenditori() {
 		
 		Set<Venditore> clone = new HashSet<Venditore>();
@@ -32,6 +36,11 @@ public class CatalogoVenditori {
 		return clone;
 	}
 	
+	/**
+	 * Ottiene una singola instanza di Venditore
+	 * @param value: Questa istanza pul essere ottenuta dal codice fiscale o dal codice venditore
+	 * @return Istanza se viene trovato, null altrimenti
+	 */
 	public static Venditore getVenditore(String value) {
 		
 		for (Venditore venditore : venditori) {
@@ -49,6 +58,12 @@ public class CatalogoVenditori {
 		return null;
 	}
 	
+	/**
+	 * Funzione che carica in memoria i dati contenuti nel file di archiviazione
+	 * 
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public static void caricaCatalogo() throws IOException, ParseException {
 
 		BufferedReader reader = new BufferedReader(new FileReader("venditori.json"));
@@ -79,6 +94,9 @@ public class CatalogoVenditori {
 
 	}
 	
+	/**
+	 * Funzione che salva su disco in formato JSON (per poter in futuro estenderlo sul web) i dati presenti in memoria
+	 */
 	public static void salvaCatalogo() {
 		
 		JSONArray json = new JSONArray();
@@ -107,6 +125,16 @@ public class CatalogoVenditori {
 		
 	}
 	
+	/**
+	 * Funzione che consente di aggiungere un venditore, validandone i dati
+	 * 
+	 * @param codice_venditore
+	 * @param codice_fiscale
+	 * @param nome
+	 * @param cognome
+	 * @param dataNascita
+	 * @return 1 se è stato inserito, 0 altrimenti, -1 con errore
+	 */
 	public static int aggiungiVenditore(String codice_venditore, String codice_fiscale, String nome, String cognome, Calendar dataNascita) {
 		
 		try {
@@ -127,6 +155,16 @@ public class CatalogoVenditori {
 		return 0;
 	}
 	
+	/**
+	 * Modifica un venditore
+	 * 
+	 * @param codice_venditore
+	 * @param codice_fiscale
+	 * @param nome
+	 * @param cognome
+	 * @param dataNascita
+	 * @return 1 se è stato modificato, 0 altrimenti
+	 */
 	public static int modificaVenditore(String codice_venditore, String codice_fiscale, String nome, String cognome, Calendar dataNascita) {
 		
 		try {
@@ -148,6 +186,12 @@ public class CatalogoVenditori {
 		return 0;
 	}
 	
+	/**
+	 * Rimuove un Venditore dalla Memoria
+	 * 
+	 * @param value
+	 * @return true se è stato rimosso, false altrimenti
+	 */
 	public static boolean rimuoviVenditore(String value) {
 		
 		Venditore venditore = getVenditore(value);

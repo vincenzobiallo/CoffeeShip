@@ -13,6 +13,9 @@ public class FormClienteFrame extends AbstractForm<Cliente> {
 
 	private static final long serialVersionUID = 2L;
 	
+	/**
+	 * Costruttore del Form per poter Aggiungere un Cliente
+	 */
 	public FormClienteFrame() {	
 		super();
 		super.TITLE = "Aggiungi Cliente";
@@ -20,6 +23,10 @@ public class FormClienteFrame extends AbstractForm<Cliente> {
 		super.btnAction.setText(TITLE);
 	}
 	
+	/**
+	 * Costruttore del form per poter modificare un cliente
+	 * @param cliente
+	 */
 	public FormClienteFrame(Cliente cliente) {	
 		super(cliente);
 		super.TITLE = "Modifica Cliente";
@@ -36,43 +43,47 @@ public class FormClienteFrame extends AbstractForm<Cliente> {
 			MessageBox.showError(getTitle(), ex.getMessage());
 		}
 	}
-
+	
 	@Override
 	public void buttonAction() {
 
 		String codice_fiscale = super.boxCodiceFiscale.getText();
 		String nome = super.boxNome.getText();
 		String cognome = super.boxCognome.getText();
-		Date rawData = super.boxDataNascita.getDate();
-
-		Calendar dataNascita = Calendar.getInstance();
-		dataNascita.setTime(rawData);
 		
-		if (super.boxCodiceFiscale.isEnabled()) {
-			int result = CatalogoClienti.aggiungiCliente(codice_fiscale, nome, cognome, dataNascita);
-
-			if (result == 1) {
-				MessageBox.showInformation(TITLE,String.format("Cliente con codice fiscale '%s' inserito con successo!", codice_fiscale));
-				CatalogoClienti.salvaCatalogo();
-				dispose();
-			} else if (result == 0) {
-				MessageBox.showWarning(TITLE, "Cliente già presente in archivio!");
-				dispose();
-			}
+		if ((super.boxDataNascita.getDate() == null) || (super.boxNome.getText().length() == 0) || (super.boxCognome.getText().length() == 0)) {
+			MessageBox.showWarning(TITLE, "Dati inseriti non validi!");
 		} else {
-			int result = CatalogoClienti.modificaCliente(codice_fiscale, nome, cognome, dataNascita);
+			
+			Date rawData = super.boxDataNascita.getDate();
 
-			if (result == 1) {
-				MessageBox.showInformation(TITLE,String.format("Cliente con codice fiscale '%s' modificato con successo!", codice_fiscale));
-				CatalogoClienti.salvaCatalogo();
-				dispose();
-			} else if (result == 0) {
-				MessageBox.showWarning(TITLE, "Cliente non presente in archivio!");
-				dispose();
+			Calendar dataNascita = Calendar.getInstance();
+			dataNascita.setTime(rawData);
+			
+			if (super.boxCodiceFiscale.isEnabled()) {
+				int result = CatalogoClienti.aggiungiCliente(codice_fiscale, nome, cognome, dataNascita);
+
+				if (result == 1) {
+					MessageBox.showInformation(TITLE,String.format("Cliente con codice fiscale '%s' inserito con successo!", codice_fiscale));
+					CatalogoClienti.salvaCatalogo();
+					dispose();
+				} else if (result == 0) {
+					MessageBox.showWarning(TITLE, "Cliente già presente in archivio!");
+					dispose();
+				}
+			} else {
+				int result = CatalogoClienti.modificaCliente(codice_fiscale, nome, cognome, dataNascita);
+
+				if (result == 1) {
+					MessageBox.showInformation(TITLE,String.format("Cliente con codice fiscale '%s' modificato con successo!", codice_fiscale));
+					CatalogoClienti.salvaCatalogo();
+					dispose();
+				} else if (result == 0) {
+					MessageBox.showWarning(TITLE, "Cliente non presente in archivio!");
+					dispose();
+				}
 			}
 		}
-
-		
-			
+					
 	}
 }

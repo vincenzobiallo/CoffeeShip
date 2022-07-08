@@ -22,6 +22,10 @@ public class CatalogoClienti {
 	
 	private static Set<Cliente> clienti = new HashSet<Cliente>();
 	
+	/**
+	 * Ottiene la lista di tutti i clienti nell'archivio
+	 * @return Set di Clienti
+	 */
 	public static Set<Cliente> getClienti() {
 		
 		Set<Cliente> clone = new HashSet<Cliente>();
@@ -32,6 +36,11 @@ public class CatalogoClienti {
 		return clone;
 	}
 	
+	/**
+	 * Ottiene la singola istanza di un Cliente, grazie al suo codice identificativo: il codice fiscale
+	 * @param codice_fiscale
+	 * @return Istanza di Cliente se viene trovato, null altrimenti
+	 */
 	public static Cliente getCliente(String codice_fiscale) {
 		
 		for (Cliente cliente : clienti) {
@@ -42,6 +51,11 @@ public class CatalogoClienti {
 		return null;
 	}
 	
+	/**
+	 * Funzione che carica in memoria i dati contenuti nel file di archiviazione
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public static void caricaCatalogo() throws IOException, ParseException {
 
 		BufferedReader reader = new BufferedReader(new FileReader("clienti.json"));
@@ -71,6 +85,9 @@ public class CatalogoClienti {
 
 	}
 	
+	/**
+	 * Funzione che salva su disco in formato JSON (per poter in futuro estenderlo sul web) i dati presenti in memoria
+	 */
 	public static void salvaCatalogo() {
 		
 		JSONArray json = new JSONArray();
@@ -98,6 +115,15 @@ public class CatalogoClienti {
 		
 	}
 	
+	/**
+	 * Funzione che consente di aggiungere un cliente, validandone i dati
+	 * 
+	 * @param codice_fiscale
+	 * @param nome
+	 * @param cognome
+	 * @param dataNascita
+	 * @return 1 se il cliente è stato inserito, 0 se era già presente, -1 se c'è stato un errore.
+	 */
 	public static int aggiungiCliente(String codice_fiscale, String nome, String cognome, Calendar dataNascita) {
 		
 		try {
@@ -119,6 +145,15 @@ public class CatalogoClienti {
 		
 	}
 	
+	/**
+	 * Funzione che consente di modificare un cliente
+	 * 
+	 * @param codice_fiscale
+	 * @param nome
+	 * @param cognome
+	 * @param dataNascita
+	 * @return 1 se il cliente è stato modificato, 0 altrimenti, -1 se c'è stato un errore
+	 */
 	public static int modificaCliente(String codice_fiscale, String nome, String cognome, Calendar dataNascita) {
 		
 		try {
@@ -141,6 +176,12 @@ public class CatalogoClienti {
 		
 	}
 	
+	/**
+	 * Elimina un cliente dalla memoria
+	 * 
+	 * @param codice_fiscale
+	 * @return true se è stato eliminato, false altrimenti
+	 */
 	public static boolean rimuoviCliente(String codice_fiscale) {
 		
 		Cliente cliente = getCliente(codice_fiscale);

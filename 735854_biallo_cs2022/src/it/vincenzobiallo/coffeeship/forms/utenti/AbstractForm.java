@@ -12,6 +12,11 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Classe Astratta che Generalizza i Form di Inserimento di Persona
+ *
+ * @param <T>
+ */
 abstract class AbstractForm<T> extends JDialog {
 
 	private static final long serialVersionUID = 1L;
@@ -28,10 +33,17 @@ abstract class AbstractForm<T> extends JDialog {
 	
 	protected JButton btnAction;
 
+	/**
+	 * Costruttore di Inserimento
+	 */
 	protected AbstractForm() {
 		initialize();
 	}
 	
+	/**
+	 * Costruttore di Modifica Persona
+	 * @param persona
+	 */
 	protected AbstractForm(T persona) {
 		
 		if (persona == null)
@@ -41,9 +53,15 @@ abstract class AbstractForm<T> extends JDialog {
 		boxCodiceFiscale.setEnabled(false);
 	}
 	
+	/**
+	 * Inserisce gli elementi all'interno della GUI
+	 */
 	private void initialize() {
 		setTitle(TITLE);
 		setResizable(false);
+		setModal(false);
+		setType(Type.POPUP);
+		setModalExclusionType(ModalExclusionType.NO_EXCLUDE);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 330, 230);
 		panel = new JPanel();
@@ -97,6 +115,9 @@ abstract class AbstractForm<T> extends JDialog {
 		panel.add(btnAction);
 	}
 	
+	/**
+	 * Funzione Astratta da implementare a seconda del tipo di persona
+	 */
 	public abstract void buttonAction();
 
 }

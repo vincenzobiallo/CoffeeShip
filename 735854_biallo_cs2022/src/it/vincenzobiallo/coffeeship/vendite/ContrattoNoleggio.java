@@ -2,6 +2,7 @@ package it.vincenzobiallo.coffeeship.vendite;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import it.vincenzobiallo.coffeeship.barche.Barca;
 import it.vincenzobiallo.coffeeship.exceptions.ContrattoException;
@@ -20,9 +21,11 @@ public class ContrattoNoleggio {
 	private double canone;
 	private double penale;
 	
+	private Calendar dataStipula;
+	
 	private boolean terminato = false;
 	
-	ContrattoNoleggio(Barca barca, Venditore venditore, Cliente cliente, double canone, double penale, Calendar dataInizio, Calendar dataFine, boolean terminato) throws ContrattoException {		
+	ContrattoNoleggio(Barca barca, Venditore venditore, Cliente cliente, double canone, double penale, Calendar dataInizio, Calendar dataFine, Calendar dataStipula, boolean terminato) throws ContrattoException {		
 		
 		if ((venditore == null) || (cliente == null))
 			throw new ContrattoException("Dati Venditore/Cliente non validi!");
@@ -39,6 +42,7 @@ public class ContrattoNoleggio {
 		
 		this.dataInizio = dataInizio;
 		this.dataFine = dataFine;
+		this.dataStipula = dataStipula;
 		
 		if ((canone < 0) || (penale < 0))
 			throw new ContrattoException("Gli importi del Contratto non possono essere numeri negativi!");
@@ -68,6 +72,10 @@ public class ContrattoNoleggio {
 	public String getDataFine() {
 		SimpleDateFormat dataFormat = new SimpleDateFormat("dd/MM/yyyy");
 		return dataFormat.format(dataFine.getTime());
+	}
+	
+	public Date getDataStipula() {
+		return dataStipula.getTime();
 	}
 
 	public double getCanone() {

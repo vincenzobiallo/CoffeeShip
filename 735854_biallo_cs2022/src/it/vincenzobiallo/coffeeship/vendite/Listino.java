@@ -137,7 +137,10 @@ public class Listino implements Cloneable {
 		Venditore venditore = CatalogoVenditori.getVenditore(codice_venditore);
 		Cliente cliente = CatalogoClienti.getCliente(codice_cliente);
 		
-		this.noleggi.add(new ContrattoNoleggio(this.barca, venditore, cliente, canone, penale, dataInizio, dataFine, terminato));
+		Calendar today = Calendar.getInstance();
+		today.setTime(Calendar.getInstance().getTime());
+		
+		this.noleggi.add(new ContrattoNoleggio(this.barca, venditore, cliente, canone, penale, dataInizio, dataFine, today, terminato));
 	}
 	
 	@Override
