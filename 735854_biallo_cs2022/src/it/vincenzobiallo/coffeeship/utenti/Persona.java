@@ -8,6 +8,9 @@ import java.util.regex.Pattern;
 
 import it.vincenzobiallo.coffeeship.exceptions.PersonaException;
 
+/**
+ * Classe che generalizza gli utenti del sistema
+ */
 public class Persona implements Comparable<Persona>, Cloneable {
 	
 	private String codice_fiscale;

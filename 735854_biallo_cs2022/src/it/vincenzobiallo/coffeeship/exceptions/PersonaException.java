@@ -1,5 +1,8 @@
 package it.vincenzobiallo.coffeeship.exceptions;
 
+/**
+ * Gestione degli errori di Persone
+ */
 public class PersonaException extends Exception {
 
 	private static final long serialVersionUID = 1L;

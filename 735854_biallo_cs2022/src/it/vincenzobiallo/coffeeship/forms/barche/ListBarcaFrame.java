@@ -1,12 +1,15 @@
 package it.vincenzobiallo.coffeeship.forms.barche;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import it.vincenzobiallo.coffeeship.barche.Barca;
@@ -73,7 +76,7 @@ public class ListBarcaFrame extends JDialog {
 		});
 		top_panel.add(btnAggiungi);
 		
-		btnModifica = new JButton("Modifica Modifica");
+		btnModifica = new JButton("Modifica Barca");
 		btnModifica.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				actionModifica();
@@ -131,9 +134,30 @@ public class ListBarcaFrame extends JDialog {
 		DefaultTableModel model = new DefaultTableModel(0, 0);
 		model.setColumnIdentifiers(new String[] { "Numero Serie", "Scafo", "Chiglia", "Deriva", "Alberatura", "Timone", "Modello" });
 		table.setModel(model);
+		table.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                String numero_serie = table.getValueAt(row, 0).toString();
+                
+                boolean hasListino = CatalogoListini.getListino(CatalogoBarche.getBarca(numero_serie)) != null;
+                
+                if (hasListino)
+                    c.setBackground(Color.ORANGE);
+                
+                return c;
+            }
+		});
 		
 		bottom_panel = new JPanel();
 		contentPane.add(bottom_panel, BorderLayout.SOUTH);
+		
+		JLabel labelSfondo = new JLabel("(Sfondo Arancione = hanno un Listino)");
+		bottom_panel.add(labelSfondo);
 		
 		btnListino = new JButton("Aggiungi Listino");
 		btnListino.addActionListener(new ActionListener() {
@@ -180,6 +204,12 @@ public class ListBarcaFrame extends JDialog {
 	}
 	
 	private void actionModifica() {
+		
+		String numero_Serie = table.getValueAt(table.getSelectedRow(), 0).toString();
+		Barca barca = CatalogoBarche.getBarca(numero_Serie);
+		
+		JDialog dialog = new FormBarcaFrame(barca);
+		dialog.setVisible(true);
 	}
 	
 	private void actionRimuovi() {

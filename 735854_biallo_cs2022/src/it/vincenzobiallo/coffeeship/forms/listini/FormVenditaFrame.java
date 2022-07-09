@@ -12,7 +12,7 @@ import javax.swing.SpinnerNumberModel;
 import it.vincenzobiallo.coffeeship.barche.Barca;
 import it.vincenzobiallo.coffeeship.barche.CatalogoBarche;
 import it.vincenzobiallo.coffeeship.exceptions.ContrattoException;
-import it.vincenzobiallo.coffeeship.exceptions.VenditaException;
+import it.vincenzobiallo.coffeeship.exceptions.OperazioneException;
 import it.vincenzobiallo.coffeeship.utenti.clienti.CatalogoClienti;
 import it.vincenzobiallo.coffeeship.utenti.clienti.Cliente;
 import it.vincenzobiallo.coffeeship.utenti.venditori.CatalogoVenditori;
@@ -37,7 +37,7 @@ public class FormVenditaFrame extends JDialog {
 	private JSpinner prezzoStandard;
 	private JSpinner prezzoApplicato;
 
-	public FormVenditaFrame() throws VenditaException {
+	public FormVenditaFrame() throws OperazioneException {
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setTitle(title);
 		getContentPane().setLayout(null);
@@ -49,7 +49,7 @@ public class FormVenditaFrame extends JDialog {
 		}
 		
 		if (choiceBarca.getItemCount() == 0)
-			throw new VenditaException("Non sono disponibili Barche per la vendita!");
+			throw new OperazioneException("Non sono disponibili Barche per la vendita!");
 		
 		choiceBarca.setBounds(10, 31, 264, 20);
 		getContentPane().add(choiceBarca);
@@ -126,7 +126,7 @@ public class FormVenditaFrame extends JDialog {
 							CatalogoListini.salvaCatalogo();
 							MessageBox.showInformation(title, "Barca Venduta con successo!");				
 							dispose();
-						} catch (VenditaException | ContrattoException ex) {
+						} catch (OperazioneException | ContrattoException ex) {
 							MessageBox.showWarning(codice_cliente, ex.getMessage());
 						}
 				

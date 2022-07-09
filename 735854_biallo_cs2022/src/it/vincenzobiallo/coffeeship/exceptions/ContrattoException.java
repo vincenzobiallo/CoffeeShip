@@ -1,5 +1,8 @@
 package it.vincenzobiallo.coffeeship.exceptions;
 
+/**
+ * Gestione degli errori di Contratto
+ */
 public class ContrattoException extends Exception {
 
 	private static final long serialVersionUID = 1L;

@@ -7,6 +7,9 @@ import java.util.regex.Pattern;
 import it.vincenzobiallo.coffeeship.barche.elementi.*;
 import it.vincenzobiallo.coffeeship.exceptions.BarcaException;
 
+/**
+ * Classe astratta che funge da Interfaccia nel sistema, contiene tutte le informazioni di una barca e un array di Cabine per i differenti modelli
+ */
 public abstract class Barca implements Cloneable {
 	
 	private String numero_serie;
@@ -29,6 +32,9 @@ public abstract class Barca implements Cloneable {
 		setupCabina();
 	}
 	
+	/**
+	 * Consente, in modo dinamico, di poter impostare una diversa tipologia di Cabina per ogni barca
+	 */
 	protected abstract void setupCabina();
 	
 	public String getNumeroSerie() {
@@ -90,6 +96,11 @@ public abstract class Barca implements Cloneable {
 		return count;
 	}
 
+	/**
+	 * Consente di inserire il numero serie validandolo
+	 * @param numero_serie
+	 * @throws BarcaException
+	 */
 	protected void setNumeroSerie(String numero_serie) throws BarcaException {
 		
 		if (numero_serie.length() != 12)

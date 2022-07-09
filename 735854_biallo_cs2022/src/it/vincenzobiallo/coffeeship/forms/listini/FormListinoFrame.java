@@ -28,9 +28,6 @@ public class FormListinoFrame extends JDialog {
 	private JSpinner spinnerVendita;
 	private JSpinner spinnerNoleggio;
 
-	/**
-	 * @wbp.parser.constructor
-	 */
 	public FormListinoFrame(Barca barca) {
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		initialize();

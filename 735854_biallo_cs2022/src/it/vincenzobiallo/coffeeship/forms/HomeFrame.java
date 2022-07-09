@@ -1,5 +1,7 @@
 package it.vincenzobiallo.coffeeship.forms;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
@@ -8,12 +10,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JSeparator;
 import javax.swing.UIManager;
 
-import it.vincenzobiallo.coffeeship.exceptions.VenditaException;
+import it.vincenzobiallo.coffeeship.exceptions.OperazioneException;
 import it.vincenzobiallo.coffeeship.forms.barche.FormBarcaFrame;
 import it.vincenzobiallo.coffeeship.forms.barche.ListBarcaFrame;
 import it.vincenzobiallo.coffeeship.forms.listini.FormNoleggioFrame;
@@ -28,6 +32,8 @@ import it.vincenzobiallo.coffeeship.forms.utenti.ListVenditoriFrame;
 import it.vincenzobiallo.coffeeship.utils.MessageBox;
 
 import java.awt.Dialog.ModalExclusionType;
+import javax.swing.JLabel;
+import java.awt.BorderLayout;
 
 public class HomeFrame {
 
@@ -41,6 +47,7 @@ public class HomeFrame {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		
 		
 		main = new JFrame();
 		main.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
@@ -129,7 +136,7 @@ public class HomeFrame {
 				try {
 					JDialog dialog = new FormVenditaFrame();
 					dialog.setVisible(true);
-				} catch (VenditaException ex) {
+				} catch (OperazioneException ex) {
 					MessageBox.showWarning("Vendita", ex.getMessage());
 				}		
 			}
@@ -156,7 +163,7 @@ public class HomeFrame {
 				try {
 					JDialog dialog = new FormNoleggioFrame();
 					dialog.setVisible(true);
-				} catch (VenditaException ex) {
+				} catch (OperazioneException ex) {
 					MessageBox.showWarning("Noleggio", ex.getMessage());
 				}	
 			}
@@ -182,6 +189,19 @@ public class HomeFrame {
 			}
 		});
 		menuNoleggio.add(btnReportNoleggi);
+		
+		
+		try {
+			JLabel logo = new JLabel("");
+			BufferedImage image = ImageIO.read(getClass().getResource("/images/coffeeship.png"));
+			ImageIcon icon = new ImageIcon(image);
+			logo.setIcon(icon);
+			main.getContentPane().add(logo, BorderLayout.CENTER);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		
+
 	}
 
 	

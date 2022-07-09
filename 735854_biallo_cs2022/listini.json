@@ -1,1 +1,15 @@
-[]
+[{
+    "canone_standard": 700,
+    "prezzo_standard": 28000,
+    "numero_barca": "000000000001",
+    "contratto_vendita": {},
+    "contratti_noleggio": [{
+        "venditore": "VEND0001",
+        "penale": 30,
+        "cliente": "BNCGAI96C56F205E",
+        "terminato": true,
+        "data_inizio": "09/07/2022",
+        "canone": 500,
+        "data_fine": "17/07/2022"
+    }]
+}]

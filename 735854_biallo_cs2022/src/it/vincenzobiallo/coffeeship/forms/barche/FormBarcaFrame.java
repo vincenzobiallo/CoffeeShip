@@ -89,6 +89,7 @@ public class FormBarcaFrame extends JDialog {
 		initialize();
 		this.btnAction.setText("Modifica Barca");
 		this.boxNumeroSerie.setEnabled(false);
+		this.boxNumeroSerie.setText(barca.getNumeroSerie());
 		this.modelloBase.setEnabled(false);
 		this.modelloMedio.setEnabled(false);
 		this.modelloAvanzato.setEnabled(false);

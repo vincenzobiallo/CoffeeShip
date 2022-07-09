@@ -5,18 +5,26 @@ import java.io.FileOutputStream;
 import java.util.stream.Stream;
 
 import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+/**
+ * Classe che consente l'utilizzo dei PDF all'interno del sistema
+ */
 public class PDFApi {
 	
+	/**
+	 * Crea un documento pdf all'interno di un file
+	 * 
+	 * @param file
+	 * @return instanza del documento pdf scrivibile
+	 * @throws FileNotFoundException
+	 * @throws DocumentException
+	 */
 	public static Document createPdf(FileOutputStream file) throws FileNotFoundException, DocumentException {
 		Document document = new Document();
 		PdfWriter.getInstance(document, file);
@@ -24,6 +32,11 @@ public class PDFApi {
 		return document;
 	}
 	
+	/**
+	 * Genera una Tabella
+	 * @param columns
+	 * @return
+	 */
 	public static PdfPTable createTable(int columns) {
 		
 		PdfPTable table = new PdfPTable(columns);
@@ -31,6 +44,12 @@ public class PDFApi {
 		return table;
 	}
 	
+	/**
+	 * Aggiunge un'intestazione ad un istanza di tabella
+	 * 
+	 * @param table
+	 * @param headers
+	 */
 	public static void addTableHeader(PdfPTable table, String[] headers) {
 	    Stream.of(headers)
 	      .forEach(columnTitle -> {
@@ -42,17 +61,16 @@ public class PDFApi {
 	    });
 	}
 	
+	/**
+	 * Aggiunge una Riga ad un'istanza di tabella
+	 * 
+	 * @param table
+	 * @param elements
+	 */
 	public static void addRow(PdfPTable table, String[] elements) {
 		
 	    for (String element : elements)
 	    	table.addCell(element);
-	}
-	
-	public static Chunk addText(String text, BaseColor color) {
-		Font font = FontFactory.getFont(FontFactory.COURIER, 16, color);
-		Chunk chunk = new Chunk(text, font);
-		
-		return chunk;
 	}
 
 }

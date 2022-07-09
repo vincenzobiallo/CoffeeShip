@@ -1,5 +1,8 @@
 package it.vincenzobiallo.coffeeship.exceptions;
 
+/**
+ * Gestione degli errori di Barche
+ */
 public class BarcaException extends Exception {
 
 	private static final long serialVersionUID = 1L;

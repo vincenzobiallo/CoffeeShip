@@ -59,6 +59,9 @@ public class FormVenditoreFrame extends AbstractForm<Venditore> {
 		}
 	}
 
+	/**
+	 * Rispetto alla classe astratta, questa funzione inserisce del nuovo codice all'interno della grafica della GUI
+	 */
 	private void injectInput() {
 		boxCodiceVenditore = new JTextField();
 		boxCodiceVenditore.setBounds(154, 128, 150, 20);

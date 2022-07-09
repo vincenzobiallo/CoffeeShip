@@ -17,6 +17,10 @@ import it.vincenzobiallo.coffeeship.utenti.clienti.Cliente;
 import it.vincenzobiallo.coffeeship.utenti.venditori.CatalogoVenditori;
 import it.vincenzobiallo.coffeeship.utenti.venditori.Venditore;
 
+/**
+ * Associa ad una Barca un Listino
+ * Con listino si intende un prezzo standard, un canone standard e informazioni su Contratti
+ */
 public class Listino implements Cloneable {
 	
 	private Barca barca;
@@ -72,6 +76,13 @@ public class Listino implements Cloneable {
 		return false;	
 	}
 	
+	/**
+	 * Consente di vedere se una barca è stata noleggiata in un dato periodo
+	 * @param dataInizio
+	 * @param dataFine
+	 * @return true se è noleggiata, false altrimenti
+	 * @throws ParseException
+	 */
 	public boolean isNoleggiato(Date dataInizio, Date dataFine) throws ParseException {
 		
 		for (ContrattoNoleggio noleggio : noleggi) {
@@ -121,6 +132,15 @@ public class Listino implements Cloneable {
 		this.canone = canone;
 	}
 	
+	/**
+	 * Imposta la Barca come venduta, aggiungendogli il contratto
+	 * 
+	 * @param codice_venditore
+	 * @param codice_cliente
+	 * @param prezzo_effettivo
+	 * @param data_vendita
+	 * @throws ContrattoException
+	 */
 	public void setContrattoVendita(String codice_venditore, String codice_cliente, double prezzo_effettivo, Calendar data_vendita) throws ContrattoException {
 		
 		if (vendita != null)
@@ -132,6 +152,18 @@ public class Listino implements Cloneable {
 		this.vendita = new ContrattoVendita(this.barca, venditore, cliente, prezzo_effettivo, data_vendita);
 	}
 	
+	/**
+	 * Aggiunge un Contratto di noleggio al listino
+	 * 
+	 * @param codice_venditore
+	 * @param codice_cliente
+	 * @param canone
+	 * @param penale
+	 * @param dataInizio
+	 * @param dataFine
+	 * @param terminato
+	 * @throws ContrattoException
+	 */
 	public void addContrattoNoleggio(String codice_venditore, String codice_cliente, double canone, double penale, Calendar dataInizio, Calendar dataFine, boolean terminato) throws ContrattoException {
 		
 		Venditore venditore = CatalogoVenditori.getVenditore(codice_venditore);

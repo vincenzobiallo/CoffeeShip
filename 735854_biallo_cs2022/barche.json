@@ -1,1 +1,9 @@
-[]
+[{
+    "numero_serie": "000000000001",
+    "timone": "INTEGRATO",
+    "chiglia": "LUNGA",
+    "scafo": "MONOSCAFO",
+    "deriva": "PERNO",
+    "alberatura": "SLOOP_ARMO",
+    "modello": "BASE"
+}]

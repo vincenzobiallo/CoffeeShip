@@ -20,18 +20,33 @@ import it.vincenzobiallo.coffeeship.barche.CatalogoBarche;
 import it.vincenzobiallo.coffeeship.barche.ModelloBarca;
 import it.vincenzobiallo.coffeeship.exceptions.BarcaException;
 import it.vincenzobiallo.coffeeship.exceptions.ContrattoException;
-import it.vincenzobiallo.coffeeship.exceptions.VenditaException;
+import it.vincenzobiallo.coffeeship.exceptions.OperazioneException;
+import it.vincenzobiallo.coffeeship.utenti.clienti.CatalogoClienti;
 import it.vincenzobiallo.coffeeship.utenti.clienti.Cliente;
+import it.vincenzobiallo.coffeeship.utenti.venditori.CatalogoVenditori;
 import it.vincenzobiallo.coffeeship.utenti.venditori.Venditore;
 import it.vincenzobiallo.coffeeship.utils.MessageBox;
 
+/**
+ * Catalogo che contiene tutti i Listini Associati alle Barche
+ */
 public class CatalogoListini {
 	
 	private static Set<Listino> listini = new HashSet<Listino>();
 	
+	/**
+	 * Numero massimo giornaliero di noleggi possibili per un cliente
+	 */
 	private final static int MAX_CLIENTE = 5;
+	/**
+	 * Numero massimo di noleggi eseguibili da un venditore
+	 */
 	private final static int MAX_VENDITORE = 25;
 	
+	/**
+	 * Ottieni la lista di tutti i listini presenti nel sistema
+	 * @return Set di Listini
+	 */
 	public static Set<Listino> getListini() {
 		
 		Set<Listino> clone = new HashSet<Listino>();
@@ -42,6 +57,11 @@ public class CatalogoListini {
 		return clone;
 	}
 	
+	/**
+	 * Ottiene una lista di tutti i listini, filtrata solo per i listini che sono disponibili per eseguire operazioni (non sono stati venduti)
+	 * @param vendita se true consente di operare su barche medie e avanzate (vendite), se false su quelle base (noleggi)
+	 * @return Set di Listini
+	 */
 	public static Set<Listino> getArticoli(boolean vendita) {
 		
 		Set<Listino> clone = new HashSet<Listino>();
@@ -62,6 +82,11 @@ public class CatalogoListini {
 		return clone;
 	}
 	
+	/**
+	 * Consente di Ottenere una singola Istanza di Listino partendo da un'istanza di Barca
+	 * @param barca
+	 * @return Instanza di Barca se disponibile, null altrimenti
+	 */
 	public static Listino getListino(Barca barca) {
 		
 		for (Listino listino : listini) {
@@ -72,6 +97,13 @@ public class CatalogoListini {
 		return null;
 	}
 	
+	/**
+	 * Consente di Associare un Listino ad una Barca in Anagrafica
+	 * @param numero_serie
+	 * @param prezzo
+	 * @param canone
+	 * @return true se è stato aggiunto, false altrimenti
+	 */
 	public static boolean aggiungiListino(String numero_serie, double prezzo, double canone) {
 		
 		try {
@@ -86,6 +118,13 @@ public class CatalogoListini {
 		return true;
 	}
 	
+	/**
+	 * Carica in memoria il catalogo su file JSON
+	 * @throws BarcaException
+	 * @throws ContrattoException
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public static void caricaCatalogo() throws BarcaException, ContrattoException, IOException, ParseException {
 
 		BufferedReader reader = new BufferedReader(new FileReader("listini.json"));
@@ -155,6 +194,9 @@ public class CatalogoListini {
 
 	}
 	
+	/**
+	 * Salva su disco, in formato JSON i dati presenti in memoria
+	 */
 	public static void salvaCatalogo() {
 		
 		JSONArray json = new JSONArray();
@@ -220,13 +262,25 @@ public class CatalogoListini {
 		
 	}
 	
-	public static boolean vendiBarca(String numero_serie, String codice_cliente, String codice_venditore, double prezzo, Calendar data) throws VenditaException, ContrattoException {
+	/**
+	 * Vende una Barca
+	 * 
+	 * @param numero_serie
+	 * @param codice_cliente
+	 * @param codice_venditore
+	 * @param prezzo
+	 * @param data
+	 * @return true se è stata venduta, false altrimenti
+	 * @throws OperazioneException
+	 * @throws ContrattoException
+	 */
+	public static boolean vendiBarca(String numero_serie, String codice_cliente, String codice_venditore, double prezzo, Calendar data) throws OperazioneException, ContrattoException {
 		
 		Barca barca = CatalogoBarche.getBarca(numero_serie);
 		Listino listino = getListino(barca);
 		
 		if (listino == null)
-			throw new VenditaException("La Barca selezionata non ha un listino!");
+			throw new OperazioneException("La Barca selezionata non ha un listino!");
 		
 		if (listino.isVenduto())
 			return false;
@@ -235,13 +289,26 @@ public class CatalogoListini {
 		return true;
 	}
 	
-	public static boolean noleggiaBarca(String numero_serie, String codice_cliente, String codice_venditore, double canone, double penale, Calendar dataInizio, Calendar dataFine) throws VenditaException, ContrattoException {
+	/**
+	 * Consente di noleggiare una barca
+	 * @param numero_serie
+	 * @param codice_cliente
+	 * @param codice_venditore
+	 * @param canone
+	 * @param penale
+	 * @param dataInizio
+	 * @param dataFine
+	 * @return true se è stata noleggiata, false se non è stata possibile noleggiarla
+	 * @throws OperazioneException
+	 * @throws ContrattoException
+	 */
+	public static boolean noleggiaBarca(String numero_serie, String codice_cliente, String codice_venditore, double canone, double penale, Calendar dataInizio, Calendar dataFine) throws OperazioneException, ContrattoException {
 		
 		Barca barca = CatalogoBarche.getBarca(numero_serie);
 		Listino listino = getListino(barca);
 		
 		if (listino == null)
-			throw new VenditaException("La Barca selezionata non ha un listino!");
+			throw new OperazioneException("La Barca selezionata non ha un listino!");
 		
 		try {
 			if (listino.isNoleggiato(dataInizio.getTime(), dataFine.getTime()))
@@ -251,10 +318,21 @@ public class CatalogoListini {
 			return false;
 		}
 		
+		if (isLocked(CatalogoClienti.getCliente(codice_cliente))) 
+			throw new OperazioneException("Il cliente selezionato ha raggiunto il massimo di operazioni eseguibili oggi!");
+		
+		if (isLocked(CatalogoVenditori.getVenditore(codice_venditore))) 
+			throw new OperazioneException("Il venditore selezionato ha raggiunto il massimo di operazioni eseguibili oggi!");
+		
 		listino.addContrattoNoleggio(codice_venditore, codice_cliente, canone, penale, dataInizio, dataFine, false);
 		return true;
 	}
 	
+	/**
+	 * Consente di individuare se un determinato cliente è bloccato o no dal numero massimo di noleggi giornalieri
+	 * @param cliente
+	 * @return true se è bloccato, false altrimenti
+	 */
 	public static boolean isLocked(Cliente cliente) {
 		
 		int count = 0;
@@ -275,6 +353,11 @@ public class CatalogoListini {
 		return false;
 	}
 	
+	/**
+	 * Consente di individuare se un determinato venditore è bloccato o no dal numero massimo di noleggi giornalieri
+	 * @param venditore
+	 * @return true se è bloccato, false altrimenti
+	 */
 	public static boolean isLocked(Venditore venditore) {
 		
 		int count = 0;

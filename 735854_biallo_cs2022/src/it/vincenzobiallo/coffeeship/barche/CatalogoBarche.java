@@ -15,10 +15,18 @@ import it.vincenzobiallo.coffeeship.barche.elementi.*;
 import it.vincenzobiallo.coffeeship.exceptions.BarcaException;
 import it.vincenzobiallo.coffeeship.utils.MessageBox;
 
+/**
+ * Catalogo che contiene tutte le Barche
+ *
+ */
 public class CatalogoBarche {
 	
 	private static Set<Barca> barche = new HashSet<Barca>();
 	
+	/**
+	 * Ottieni la lista di tutte le barche in anagrafica
+	 * @return Set di Barca
+	 */
 	public static Set<Barca> getBarche() {
 		
 		Set<Barca> clone = new HashSet<Barca>();
@@ -29,6 +37,11 @@ public class CatalogoBarche {
 		return clone;
 	}
 	
+	/**
+	 * Ottieni una singola istanza di Barca attraverso il numero di Serie
+	 * @param numero_serie
+	 * @return instanza di barca se trovata, null altrimenti
+	 */
 	public static Barca getBarca(String numero_serie) {
 		
 		for (Barca barca : barche) {
@@ -39,6 +52,10 @@ public class CatalogoBarche {
 		return null;
 	}
 	
+	/**
+	 * Funzione per caricare in memoria il catalogo salvato sul disco in formato JSON
+	 * @throws IOException
+	 */
 	public static void caricaCatalogo() throws IOException {
 
 		BufferedReader reader = new BufferedReader(new FileReader("barche.json"));
@@ -68,6 +85,9 @@ public class CatalogoBarche {
 		}
 	}
 	
+	/**
+	 * Salva su disco i dati presenti in memoria
+	 */
 	public static void salvaCatalogo() {
 		
 		JSONArray json = new JSONArray();
@@ -107,6 +127,17 @@ public class CatalogoBarche {
 					
 	}
 	
+	/**
+	 * Inserisce una Barca in memoria, a seconda del modello di barca ne genera un'istanza diversa
+	 * @param numero_serie
+	 * @param scafo
+	 * @param chiglia
+	 * @param deriva
+	 * @param alberatura
+	 * @param timone
+	 * @param modello
+	 * @return 1 se inserita, 0 altrimenti
+	 */
 	public static int aggiungiBarca(String numero_serie, Scafo scafo, Chiglia chiglia, Deriva deriva, Alberatura alberatura, Timone timone, ModelloBarca modello) {
 		
 		Barca barca = null;
@@ -141,6 +172,18 @@ public class CatalogoBarche {
 		return 0;
 	}
 	
+	/**
+	 * Modifica i dati di una barca
+	 * 
+	 * @param numero_serie
+	 * @param scafo
+	 * @param chiglia
+	 * @param deriva
+	 * @param alberatura
+	 * @param timone
+	 * @param modello
+	 * @return 1 se modificata, 0 altrimenti
+	 */
 	public static int modificaBarca(String numero_serie, Scafo scafo, Chiglia chiglia, Deriva deriva, Alberatura alberatura, Timone timone, ModelloBarca modello) {
 		
 		Barca barca = null;
@@ -176,6 +219,12 @@ public class CatalogoBarche {
 		return 0;
 	}
 	
+	/**
+	 * Rimuove una Barca dalla Memoria
+	 * 
+	 * @param numero_serie
+	 * @return true se rimossa, false altrimenti
+	 */
 	public static boolean rimuoviBarca(String numero_serie) {
 		
 		Barca barca = getBarca(numero_serie);
