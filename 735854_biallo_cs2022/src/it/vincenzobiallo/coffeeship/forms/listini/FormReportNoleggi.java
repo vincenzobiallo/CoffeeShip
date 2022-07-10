@@ -53,7 +53,7 @@ public class FormReportNoleggi extends JDialog {
 		choiceCliente = new Choice();
 		choiceCliente.setBounds(10, 29, 311, 20);
 		for (Cliente cliente : CatalogoClienti.getClienti())
-			choiceCliente.add(cliente.getCodiceFiscale());
+			choiceCliente.add(cliente.getCodiceFiscale() + " - " + "(" + cliente.getCognome() + " " + cliente.getNome() + ")");
 		getContentPane().add(choiceCliente);
 		
 	}
@@ -62,13 +62,13 @@ public class FormReportNoleggi extends JDialog {
 		
 		try {
 			
-			File file = new File("Report Noleggi " + Calendar.getInstance().getTimeInMillis() + ".pdf");
+			File file = new File("./reports/Report Noleggi " + Calendar.getInstance().getTimeInMillis() + ".pdf");
 			Document report = PDFApi.createPdf(new FileOutputStream(file));
 			
 			Set<Listino> barche = CatalogoListini.getListini();		
 			Set<ContrattoNoleggio> contratti = new TreeSet<ContrattoNoleggio>(new SortByDipendente());
 			
-			String codice_fiscale = choiceCliente.getSelectedItem();
+			String codice_fiscale = choiceCliente.getSelectedItem().split(" - ")[0];
 			Cliente cliente = CatalogoClienti.getCliente(codice_fiscale);
 			
 			for (Listino listino : barche) {
@@ -117,6 +117,9 @@ public class FormReportNoleggi extends JDialog {
 		
 	}
 	
+	/**
+	 * Comparatore per ordinare la lista in base al cognome del dipendente che ha effettuato il noleggio
+	 */
 	private class SortByDipendente implements Comparator<ContrattoNoleggio> {
 
 		@Override

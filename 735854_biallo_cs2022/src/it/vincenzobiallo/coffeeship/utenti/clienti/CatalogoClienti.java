@@ -18,6 +18,9 @@ import org.json.JSONObject;
 import it.vincenzobiallo.coffeeship.exceptions.PersonaException;
 import it.vincenzobiallo.coffeeship.utils.MessageBox;
 
+/**
+ * Catalogo che Gestisce i Clienti
+ */
 public class CatalogoClienti {
 	
 	private static Set<Cliente> clienti = new HashSet<Cliente>();
@@ -58,7 +61,7 @@ public class CatalogoClienti {
 	 */
 	public static void caricaCatalogo() throws IOException, ParseException {
 
-		BufferedReader reader = new BufferedReader(new FileReader("clienti.json"));
+		BufferedReader reader = new BufferedReader(new FileReader("./files/clienti.json"));
 		StringBuilder jsonString = new StringBuilder();
 
 		String buffer;
@@ -106,7 +109,7 @@ public class CatalogoClienti {
 
 		BufferedWriter writer;
 		try {
-			writer = new BufferedWriter(new FileWriter("clienti.json"));
+			writer = new BufferedWriter(new FileWriter("./files/clienti.json"));
 			writer.write(json.toString(4));
 			writer.close();
 		} catch (IOException ex) {

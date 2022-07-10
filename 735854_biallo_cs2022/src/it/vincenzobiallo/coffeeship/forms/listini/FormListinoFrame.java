@@ -73,28 +73,34 @@ public class FormListinoFrame extends JDialog {
 		getContentPane().add(lblCanoneDiNoleggio);
 		
 		spinnerVendita = new JSpinner();
-		spinnerVendita.setModel(new SpinnerNumberModel(0.0, null, null, 0.1));
+		spinnerVendita.setModel(new SpinnerNumberModel(0.0, 0.0, null, 0.1));
 		spinnerVendita.setBounds(130, 42, 144, 20);
 		getContentPane().add(spinnerVendita);
 		
 		spinnerNoleggio = new JSpinner();
-		spinnerNoleggio.setModel(new SpinnerNumberModel(0.0, null, null, 0.1));
+		spinnerNoleggio.setModel(new SpinnerNumberModel(0.0, 0.0, null, 0.1));
 		spinnerNoleggio.setBounds(130, 70, 144, 20);
 		getContentPane().add(spinnerNoleggio);
 		
 		btnOperation = new JButton("Aggiungi Listino");
 		btnOperation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				boolean result = CatalogoListini.aggiungiListino(boxBarca.getText(), (double) spinnerVendita.getValue(), (double) spinnerNoleggio.getValue());
 				
-				if (result)
-					MessageBox.showInformation("Listini", "Listino aggiornato con successo!");
-				else
-					MessageBox.showWarning("Listini", "Impossibile aggiornare il Listino!");
+				if (((double) spinnerVendita.getValue() <= 0) || (((double) spinnerNoleggio.getValue()) <= 0)) {
+					MessageBox.showWarning("Listini", "Valori non validi!");
+				} else {
 				
-				CatalogoListini.salvaCatalogo();
-				
-				dispose();
+					boolean result = CatalogoListini.aggiungiListino(boxBarca.getText(), (double) spinnerVendita.getValue(), (double) spinnerNoleggio.getValue());
+					
+					if (result)
+						MessageBox.showInformation("Listini", "Listino aggiornato con successo!");
+					else
+						MessageBox.showWarning("Listini", "Impossibile aggiornare il Listino!");
+					
+					CatalogoListini.salvaCatalogo();
+					
+					dispose();
+				}
 			}
 		});
 		btnOperation.setBounds(10, 127, 264, 23);

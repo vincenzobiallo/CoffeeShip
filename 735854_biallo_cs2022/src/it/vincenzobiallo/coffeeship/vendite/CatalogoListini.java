@@ -127,7 +127,7 @@ public class CatalogoListini {
 	 */
 	public static void caricaCatalogo() throws BarcaException, ContrattoException, IOException, ParseException {
 
-		BufferedReader reader = new BufferedReader(new FileReader("listini.json"));
+		BufferedReader reader = new BufferedReader(new FileReader("./files/listini.json"));
 		StringBuilder jsonString = new StringBuilder();
 
 		String buffer;
@@ -253,7 +253,7 @@ public class CatalogoListini {
 
 		BufferedWriter writer;
 		try {
-			writer = new BufferedWriter(new FileWriter("listini.json"));
+			writer = new BufferedWriter(new FileWriter("./files/listini.json"));
 			writer.write(json.toString(4));
 			writer.close();
 		} catch (IOException ex) {

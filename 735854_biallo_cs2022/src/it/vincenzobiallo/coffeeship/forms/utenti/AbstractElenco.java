@@ -31,6 +31,10 @@ abstract class AbstractElenco<T> extends JDialog {
 	private JSeparator separator;
 	private JButton btnAggiorna;
 
+	/**
+	 * Genera il Form dell'elenco
+	 * @param columns
+	 */
 	protected AbstractElenco(String[] columns) {
 		setTitle(TITLE);
 		setModal(false);
@@ -96,11 +100,29 @@ abstract class AbstractElenco<T> extends JDialog {
 		
 	}
 	
+	/**
+	 * Evento che si Attiva Quando si clicca sul Pulsante Aggiungi
+	 */
 	protected abstract void actionAggiungi();
+	
+	/**
+	 * Evento che si Attiva Quando si clicca sul Pulsante Modifica
+	 */
 	protected abstract void actionModifica();
+	
+	/**
+	 * Evento che si Attiva Quando si clicca sul Pulsante Rimuovi
+	 */
 	protected abstract void actionRimuovi();
+	
+	/**
+	 * Evento che si Attiva Quando si clicca sul Pulsante Aggiorna
+	 */
 	protected abstract void actionAggiorna();
 	
+	/**
+	 * Inserisce i dati nella Tabella
+	 */
 	protected abstract void injectData(Set<T> data);
 
 }

@@ -58,18 +58,27 @@ public class FormTerminaNoleggio extends JDialog {
 				Listino listino = CatalogoListini.getListino(barca);
 
 				ContrattoNoleggio[] contratti = getNoleggi(listino);
+				
 				for (ContrattoNoleggio contratto : contratti)
 					choiceInizio.add(contratto.getDataInizio());
+				
+				if (choiceInizio.getItemCount() == 1 && choiceInizio.getItem(0).equals("-")) {
+					MessageBox.showWarning(title, "Non sono disponibili Noleggi per questa barca!");
+					dispose();
+				}
 				choiceInizio.setEnabled(true);
 			}
 		});
+		
 		for (Listino listino : CatalogoListini.getArticoli(false))
 			if (listino.isNoleggiato())
 				choiceBarca.add(listino.getBarca().getNumeroSerie());
+		
 		if (choiceBarca.getItemCount() == 0) {
-			MessageBox.showWarning(title, "Non sono disponibili Barche per la vendita!");
+			MessageBox.showWarning(title, "Non sono disponibili Noleggi da chiudere!");
 			dispose();
 		}
+		
 		choiceBarca.setBounds(124, 11, 150, 20);
 		contentPanel.add(choiceBarca);
 
@@ -160,6 +169,9 @@ public class FormTerminaNoleggio extends JDialog {
 		contentPanel.add(labelDataInizio);
 	}
 
+	/**
+	 * Aggiorna i Campi nell'aggiornamento
+	 */
 	private void updateFields() {
 
 		String dataInizio = choiceInizio.getSelectedItem();
@@ -195,6 +207,11 @@ public class FormTerminaNoleggio extends JDialog {
 
 	}
 
+	/**
+	 * Ottiene un elengo di tutti i noleggi
+	 * @param listino
+	 * @return Array di Contratti Noleggio
+	 */
 	private ContrattoNoleggio[] getNoleggi(Listino listino) {
 
 		Set<ContrattoNoleggio> contratti = new HashSet<ContrattoNoleggio>();

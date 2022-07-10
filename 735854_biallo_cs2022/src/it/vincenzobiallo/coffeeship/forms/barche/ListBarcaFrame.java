@@ -52,6 +52,9 @@ public class ListBarcaFrame extends JDialog {
 	private JLabel labelBarcheVendute;
 	private JButton btnListino;
 
+	/**
+	 * Genera form di Lista Barche
+	 */
 	public ListBarcaFrame() {
 		setTitle(TITLE);
 		setModal(false);
@@ -148,6 +151,8 @@ public class ListBarcaFrame extends JDialog {
                 
                 if (hasListino)
                     c.setBackground(Color.ORANGE);
+                else
+                	c.setBackground(Color.WHITE);
                 
                 return c;
             }
@@ -198,11 +203,17 @@ public class ListBarcaFrame extends JDialog {
 		
 	}
 	
+	/**
+	 * Funzionalità di Aggiunta
+	 */
 	private void actionAggiungi() {
 		JDialog dialog = new FormBarcaFrame();
 		dialog.setVisible(true);
 	}
 	
+	/**
+	 * Funzionalità di Modifica
+	 */
 	private void actionModifica() {
 		
 		String numero_Serie = table.getValueAt(table.getSelectedRow(), 0).toString();
@@ -212,6 +223,9 @@ public class ListBarcaFrame extends JDialog {
 		dialog.setVisible(true);
 	}
 	
+	/**
+	 * Funzionalità di Rimozione
+	 */
 	private void actionRimuovi() {
 		
 		int index = table.getSelectedRow(); // -1 se nulla è selezionato
@@ -219,6 +233,11 @@ public class ListBarcaFrame extends JDialog {
 		if (index != -1) {
 			
 			Barca selected = (Barca) CatalogoBarche.getBarche().toArray()[index];
+			
+			if (CatalogoListini.getListino(selected) != null) {
+				MessageBox.showInformation("Gestione Barche", "Non puoi eliminare questa Barca in quanto ha un Listino attivo!");
+				return;
+			}
 			
 			if (MessageBox.askQuestion("Gestione Barche", String.format("Vuoi veramente eliminare questa Barca con Numero Serie '%s' ?", selected.getNumeroSerie()))) {
 				
@@ -237,6 +256,9 @@ public class ListBarcaFrame extends JDialog {
 		}
 	}
 	
+	/**
+	 * Funzionalità di Aggiornamento
+	 */
 	private void actionAggiorna() {
 		
 		Set<Barca> buffer = CatalogoBarche.getBarche();
@@ -250,6 +272,10 @@ public class ListBarcaFrame extends JDialog {
 		this.injectData(buffer);
 	}
 	
+	/**
+	 * Inserisce i dati nella tabella
+	 * @param data
+	 */
 	private void injectData(Set<Barca> data) {
 		
 		DefaultTableModel model = (DefaultTableModel) table.getModel();

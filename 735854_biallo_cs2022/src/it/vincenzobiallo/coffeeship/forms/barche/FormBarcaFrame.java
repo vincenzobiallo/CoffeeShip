@@ -44,6 +44,9 @@ public class FormBarcaFrame extends JDialog {
 	
 	private JButton btnAction;
 
+	/**
+	 * Genera Form di Creaziome Barca
+	 */
 	public FormBarcaFrame() {
 		initialize();
 		this.btnAction.setText("Aggiungi Barca");
@@ -81,6 +84,10 @@ public class FormBarcaFrame extends JDialog {
 		});
 	}
 	
+	/**
+	 * Genera Form di Modifica Barca
+	 * @param barca
+	 */
 	public FormBarcaFrame(Barca barca) {
 		
 		if (barca == null)
@@ -120,6 +127,9 @@ public class FormBarcaFrame extends JDialog {
 		});
 	}
 	
+	/**
+	 * Inizializza il Form
+	 */
 	private void initialize() {
 		setTitle(title);
 		setModal(true);

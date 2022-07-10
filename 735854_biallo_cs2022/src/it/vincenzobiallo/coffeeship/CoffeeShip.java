@@ -1,6 +1,7 @@
 package it.vincenzobiallo.coffeeship;
 
 import java.awt.EventQueue;
+import java.io.File;
 
 import it.vincenzobiallo.coffeeship.barche.CatalogoBarche;
 import it.vincenzobiallo.coffeeship.forms.HomeFrame;
@@ -31,9 +32,29 @@ public class CoffeeShip {
 			}
 		});
 		
+		/**
+		 * Closing Event
+		 */
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+	        public void run() {
+	            System.out.println("In shutdown hook");
+	        }
+	    }, "Shutdown-thread"));
+		
 	}
 	
+	/**
+	 * Carica, per ogni Catalogo, i file in memoria. Qualora ci dovesse essere un problema, il sistema chiede all'utente se ne vuole generare uno nuovo,
+	 * oppure chiudere il programma per poterlo controllare manualmente
+	 * @return true se tutti i file sono stati caricati, false altrimenti
+	 */
 	private static boolean caricaFiles() {
+		
+		File reports = new File("./reports/");
+		reports.mkdirs();
+		
+		File files = new File("./files");
+		files.mkdirs();
 		
 		String title = "Caricamento File";
 		

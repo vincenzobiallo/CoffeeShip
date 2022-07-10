@@ -1,0 +1,47 @@
+[
+    {
+        "numero_serie": "000000000002",
+        "timone": "SOSPESO",
+        "chiglia": "BULBO",
+        "scafo": "MULTISCAFO",
+        "deriva": "RETRATTILE",
+        "alberatura": "CUTTER",
+        "modello": "MEDIA"
+    },
+    {
+        "numero_serie": "000000000001",
+        "timone": "INTEGRATO",
+        "chiglia": "LUNGA",
+        "scafo": "MONOSCAFO",
+        "deriva": "PERNO",
+        "alberatura": "SLOOP_ARMO",
+        "modello": "BASE"
+    },
+    {
+        "numero_serie": "000000000004",
+        "timone": "SKEG",
+        "chiglia": "PINNA",
+        "scafo": "MONOSCAFO",
+        "deriva": "PERNO",
+        "alberatura": "KETCH",
+        "modello": "MEDIA"
+    },
+    {
+        "numero_serie": "000000000003",
+        "timone": "DOPPIO",
+        "chiglia": "ROLLIO",
+        "scafo": "MULTISCAFO",
+        "deriva": "RETRATTILE",
+        "alberatura": "IOLE",
+        "modello": "AVANZATA"
+    },
+    {
+        "numero_serie": "000000000005",
+        "timone": "SOSPESO",
+        "chiglia": "PINNA",
+        "scafo": "MONOSCAFO",
+        "deriva": "PERNO",
+        "alberatura": "SLOOP_FRAZIONATO",
+        "modello": "BASE"
+    }
+]

@@ -80,12 +80,12 @@ public class FormNoleggioFrame extends JDialog {
 		
 		canoneStandard = new JSpinner();
 		canoneStandard.setEnabled(false);
-		canoneStandard.setModel(new SpinnerNumberModel(0.0, null, null, 0.1));
+		canoneStandard.setModel(new SpinnerNumberModel(0.0, 0.0, null, 0.1));
 		canoneStandard.setBounds(132, 57, 142, 20);
 		getContentPane().add(canoneStandard);
 		
 		canoneApplicato = new JSpinner();
-		canoneApplicato.setModel(new SpinnerNumberModel(0.0, null, null, 0.1));
+		canoneApplicato.setModel(new SpinnerNumberModel(0.0, 0.0, null, 0.1));
 		canoneApplicato.setBounds(132, 82, 142, 20);
 		getContentPane().add(canoneApplicato);
 		
@@ -96,7 +96,7 @@ public class FormNoleggioFrame extends JDialog {
 		Choice choiceCliente = new Choice();
 		choiceCliente.setBounds(10, 203, 264, 20);
 		for (Cliente cliente : CatalogoClienti.getClienti())
-			choiceCliente.add(cliente.getCodiceFiscale());
+			choiceCliente.add(cliente.getCodiceFiscale() + " - " + "(" + cliente.getCognome() + " " + cliente.getNome() + ")");
 		getContentPane().add(choiceCliente);
 		
 		JLabel labelVenditore = new JLabel("Venditore");
@@ -106,7 +106,7 @@ public class FormNoleggioFrame extends JDialog {
 		Choice choiceVenditore = new Choice();
 		choiceVenditore.setBounds(10, 249, 264, 20);
 		for (Venditore venditore : CatalogoVenditori.getVenditori())
-			choiceVenditore.add(venditore.getCodiceVenditore());
+			choiceVenditore.add(venditore.getCodiceVenditore() + " - " + "(" + venditore.getCognome() + " " + venditore.getNome() + ")");
 		getContentPane().add(choiceVenditore);
 		
 		JSpinner penale = new JSpinner();
@@ -121,10 +121,10 @@ public class FormNoleggioFrame extends JDialog {
 				String codice_barca = choiceBarca.getSelectedItem();
 				Barca barca = CatalogoBarche.getBarca(codice_barca);
 				
-				String codice_cliente = choiceCliente.getSelectedItem();
+				String codice_cliente = choiceCliente.getSelectedItem().split(" - ")[0];
 				Cliente cliente = CatalogoClienti.getCliente(codice_cliente);
 				
-				String codice_venditore = choiceVenditore.getSelectedItem();
+				String codice_venditore = choiceVenditore.getSelectedItem().split(" - ")[0];
 				Venditore venditore = CatalogoVenditori.getVenditore(codice_venditore);		
 				
 				if ((barca == null) || (cliente == null) || (venditore == null) || (boxDataInizio.getDate() == null) || (boxDataFine.getDate() == null)) {
@@ -191,6 +191,9 @@ public class FormNoleggioFrame extends JDialog {
 		});
 	}
 	
+	/**
+	 * Aggiorna i Campi della tabella dopo una selezione
+	 */
 	private void updateFields() {
 		String numero_serie = choiceBarca.getSelectedItem();
     	

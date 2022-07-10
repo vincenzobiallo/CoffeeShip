@@ -104,7 +104,7 @@ public class FormReportVendite extends JDialog {
 		
 		try {
 			
-			File file = new File("Report Vendite " + Calendar.getInstance().getTimeInMillis() + ".pdf");
+			File file = new File("reports/Report Vendite " + Calendar.getInstance().getTimeInMillis() + ".pdf");
 			Document report = PDFApi.createPdf(new FileOutputStream(file));
 			
 			Set<Barca> barcheAcquistate = null;
@@ -119,7 +119,7 @@ public class FormReportVendite extends JDialog {
 					
 					Date dataVendita = new SimpleDateFormat("dd/MM/yyyy").parse(listino.getContrattoVendita().getData());
 					
-					if (dataVendita.after(start) && dataVendita.before(end))
+					if ((dataVendita.after(start) && dataVendita.before(end)) || (dataVendita.equals(start) || dataVendita.equals(end)))
 						barcheAcquistate.add(listino.getBarca());
 					
 				}				
@@ -154,6 +154,9 @@ public class FormReportVendite extends JDialog {
 		
 	}
 	
+	/**
+	 * Comparatore per ordinare la lista in base al modello, prima Base, poi medio
+	 */
 	private class SortByModello implements Comparator<Barca> {
 
 		@Override
@@ -163,13 +166,16 @@ public class FormReportVendite extends JDialog {
 			ModelloBarca m2 = b2.getModello();
 			
 			if (m1 == ModelloBarca.MEDIA && m2 == ModelloBarca.AVANZATA)
-				return -1;;
+				return -1;
 			
 			return 1;
 		}
 		
 	}
 	
+	/**
+	 * Comparatore per ordinare la lista in base al prezzo più alto di vendita
+	 */
 	private class SortByPrice implements Comparator<Barca> {
 
 		@Override

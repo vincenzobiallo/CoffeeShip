@@ -17,7 +17,6 @@ import it.vincenzobiallo.coffeeship.utils.MessageBox;
 
 /**
  * Catalogo che contiene tutte le Barche
- *
  */
 public class CatalogoBarche {
 	
@@ -58,7 +57,7 @@ public class CatalogoBarche {
 	 */
 	public static void caricaCatalogo() throws IOException {
 
-		BufferedReader reader = new BufferedReader(new FileReader("barche.json"));
+		BufferedReader reader = new BufferedReader(new FileReader("./files/barche.json"));
 		StringBuilder jsonString = new StringBuilder();
 
 		String buffer;
@@ -118,7 +117,7 @@ public class CatalogoBarche {
 		
 		BufferedWriter writer;
 		try {
-			writer = new BufferedWriter(new FileWriter("barche.json"));
+			writer = new BufferedWriter(new FileWriter("./files/barche.json"));
 			writer.write(json.toString(4));
 			writer.close();
 		} catch (IOException ex) {

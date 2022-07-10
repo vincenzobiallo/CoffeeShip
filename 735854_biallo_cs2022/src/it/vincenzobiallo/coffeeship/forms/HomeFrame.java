@@ -34,6 +34,7 @@ import it.vincenzobiallo.coffeeship.utils.MessageBox;
 import java.awt.Dialog.ModalExclusionType;
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
+import javax.swing.SwingConstants;
 
 public class HomeFrame {
 
@@ -48,12 +49,11 @@ public class HomeFrame {
 			ex.printStackTrace();
 		}
 		
-		
 		main = new JFrame();
 		main.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
 		main.setResizable(false);
 		main.setTitle(TITLE);
-		main.setBounds(100, 100, 450, 300);
+		main.setBounds(100, 100, 300, 300);
 		main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -193,6 +193,7 @@ public class HomeFrame {
 		
 		try {
 			JLabel logo = new JLabel("");
+			logo.setHorizontalAlignment(SwingConstants.CENTER);
 			BufferedImage image = ImageIO.read(getClass().getResource("/images/coffeeship.png"));
 			ImageIcon icon = new ImageIcon(image);
 			logo.setIcon(icon);
