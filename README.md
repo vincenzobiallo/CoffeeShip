@@ -1,3 +1,4 @@
+![Logo CoffeeShip](https://github.com/vincenzobiallo/CoffeeShip/blob/main/735854_biallo_cs2022/res/images/coffeeship.png?raw=true)
 <h1>CoffeeShip</h1>
 <h3>Progetto in Java realizzato per il caso di studio di "Programmazione 2" per l'Università degli Studi di Bari, Informatica Corso ITPS A-L</h3>
 <h4>Autore: Vincenzo Biallo</h4>
